@@ -19,7 +19,7 @@ public interface CarService {
 
 	DataResult<List<ListCarResponse>> getAll();
 	
-	DataResult<CarResponse> getById(CarResponse carResponse);
+	DataResult<CarResponse> getById(int id);
 
 
 

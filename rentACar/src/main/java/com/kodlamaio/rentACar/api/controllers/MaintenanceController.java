@@ -6,10 +6,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kodlamaio.rentACar.business.abstracts.MaintenanceService;
 import com.kodlamaio.rentACar.business.requests.maintenances.CreateMaintenanceRequest;
+import com.kodlamaio.rentACar.business.requests.maintenances.DeleteMaintenanceRequest;
 import com.kodlamaio.rentACar.business.requests.maintenances.UpdateMaintenanceRequest;
 import com.kodlamaio.rentACar.business.responses.maintenances.ListMaintenanceResponse;
 import com.kodlamaio.rentACar.business.responses.maintenances.MaintenanceResponse;
@@ -34,6 +36,10 @@ public class MaintenanceController {
 	public Result update(@RequestBody UpdateMaintenanceRequest updateMaintenanceRequest) {
 		return this.maintenanceService.update(updateMaintenanceRequest);
 	}
+	@PostMapping("/delete")
+	public Result delete(@RequestBody DeleteMaintenanceRequest deleteMaintenanceRequest) {
+		return this.maintenanceService.delete(deleteMaintenanceRequest);
+	}
 
 	@GetMapping("/getall")
 	public DataResult<List<ListMaintenanceResponse>> getAll() {
@@ -42,7 +48,7 @@ public class MaintenanceController {
 	}
 
 	@GetMapping("/getbyid")
-	public DataResult<MaintenanceResponse> getById(int id) {
+	public DataResult<MaintenanceResponse> getById(@RequestParam int id) {
 		return this.maintenanceService.getById(id);
 
 	}

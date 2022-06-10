@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kodlamaio.rentACar.business.abstracts.CarService;
@@ -48,8 +49,8 @@ public class CarController {
 	}
 
 	@GetMapping("/getbyid")
-	public DataResult<CarResponse> getById(int id) {
-		return null ;
+	public DataResult<CarResponse> getById(@RequestParam int id) {
+		return this.carService.getById(id); 
 		//this.carService.getById(id);
 	}
 
