@@ -1,5 +1,6 @@
 package com.kodlamaio.rentACar.business.concretes;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,19 +42,9 @@ public class MaintenanceManager implements MaintenanceService {
 	@Override
 	public Result add(CreateMaintenanceRequest createMaintenanceRequest) {
 
-		/*
-		 * Maintenance maintenance = new Maintenance();
-		 * maintenance.setDateSent(createMaintenanceRequest.getDateSent());
-		 * maintenance.setDateReturned(createMaintenanceRequest.getDateReturned());
-		 * maintenance.setDescription(createMaintenanceRequest.getDescription()); Car
-		 * car = new Car(); car.setId(createMaintenanceRequest.getCarId());
-		 * maintenance.setCar(car);
-		 */
-
 		Maintenance maintenance = this.modelMapperService.forRequest().map(createMaintenanceRequest, Maintenance.class);
 		Car car = this.carRepository.findById(createMaintenanceRequest.getCarId());
-		car.setCarState(1);
-
+		car.setCarState(2);
 		this.maintenanceRepository.save(maintenance);
 
 		return new SuccessResult("MAINTENANCE.SAVED");
@@ -70,18 +61,14 @@ public class MaintenanceManager implements MaintenanceService {
 
 	@Override
 	public Result update(UpdateMaintenanceRequest updateMaintenanceRequest) {
-		/*
-		 * Maintenance maintenanceToUpdate =
-		 * maintenanceRepository.findById(updateMaintenanceRequest.getId()); Car car =
-		 * new Car(); car.setId(updateMaintenanceRequest.getCarId());
-		 * maintenanceToUpdate.setDateReturned(updateMaintenanceRequest.getDateReturned(
-		 * )); maintenanceToUpdate.setDateSent(updateMaintenanceRequest.getDateSent());
-		 * maintenanceToUpdate.setDescription(updateMaintenanceRequest.getDescription())
-		 * ; maintenanceToUpdate.setCar(car);
-		 */
+
 		Maintenance maintenanceToUpdate = this.modelMapperService.forRequest().map(updateMaintenanceRequest,
 				Maintenance.class);
-
+		Car car = this.carRepository.findById(updateMaintenanceRequest.getCarId());
+		LocalDate itsToday = LocalDate.now();
+		if (itsToday.equals(updateMaintenanceRequest.getDateReturned())) {
+			car.setCarState(1);
+		}
 		this.maintenanceRepository.save(maintenanceToUpdate);
 
 		return new SuccessResult("MAINTENANCE.UPDATED");
@@ -96,8 +83,6 @@ public class MaintenanceManager implements MaintenanceService {
 
 		return new SuccessDataResult<List<ListMaintenanceResponse>>(response, "MAINTENANCES.GETTED");
 
-		// new
-		// SuccessDataResult<List<MaintenanceResponse>>(maintenanceRepository.findAll());
 	}
 
 	@Override
@@ -108,8 +93,6 @@ public class MaintenanceManager implements MaintenanceService {
 
 		return new SuccessDataResult<MaintenanceResponse>(response, "MAINTENANCE.GETTED");
 
-		// new
-		// SuccessDataResult<MaintenanceResponse>(this.maintenanceRepository.findById(maintenanceResponse.getId()));
 	}
 
 }

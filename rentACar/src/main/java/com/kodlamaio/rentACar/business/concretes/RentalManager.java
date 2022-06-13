@@ -20,8 +20,10 @@ import com.kodlamaio.rentACar.core.utilities.results.Result;
 import com.kodlamaio.rentACar.core.utilities.results.SuccessDataResult;
 import com.kodlamaio.rentACar.core.utilities.results.SuccessResult;
 import com.kodlamaio.rentACar.dataAccess.abstracts.CarRepository;
+import com.kodlamaio.rentACar.dataAccess.abstracts.CityRepository;
 import com.kodlamaio.rentACar.dataAccess.abstracts.RentalRepository;
 import com.kodlamaio.rentACar.entities.concretes.Car;
+import com.kodlamaio.rentACar.entities.concretes.City;
 import com.kodlamaio.rentACar.entities.concretes.Rental;
 
 @Service
@@ -29,29 +31,41 @@ public class RentalManager implements RentalService {
 
 	RentalRepository rentalRepository;
 	CarRepository carRepository;
+	CityRepository cityRepository;
 	ModelMapperService modelMapperService;
 
 	@Autowired
 	public RentalManager(RentalRepository rentalRepository, CarRepository carRepository,
-			ModelMapperService modelMapperService) {
+			ModelMapperService modelMapperService, CityRepository cityRepository) {
 
 		this.rentalRepository = rentalRepository;
 		this.carRepository = carRepository;
 		this.modelMapperService = modelMapperService;
+		this.cityRepository = cityRepository;
 	}
 
 	@Override
 	public Result add(CreateRentalRequest createRentalRequest) {
-	
 
 		Rental rental = this.modelMapperService.forRequest().map(createRentalRequest, Rental.class);
 		Car car = this.carRepository.findById(createRentalRequest.getCarId());
+		City pickUpCityId = this.cityRepository.findById(createRentalRequest.getPickUpCityId());
+		City returnCityId = this.cityRepository.findById(createRentalRequest.getReturnedCityId());
 
 		LocalDate pickupDate = (createRentalRequest.getPickupDate());
 		LocalDate returnDate = (createRentalRequest.getReturnDate());
 		Long range = ChronoUnit.DAYS.between(pickupDate, returnDate);
+
 		rental.setTotalDate(range);
 		rental.setTotalPrice(range * car.getDailyPrice());
+		rental.setPickUpCityId(pickUpCityId);
+		rental.setReturnedCityId(returnCityId);
+		car.setCarState(3);
+
+		if (!(rental.getPickUpCityId().equals(rental.getReturnedCityId()))) {
+			rental.setTotalPrice(rental.getTotalPrice() + 750);
+		}
+		car.setCity(returnCityId);
 
 		this.rentalRepository.save(rental);
 		return new SuccessResult("RENTAL.ADDED");
@@ -62,22 +76,21 @@ public class RentalManager implements RentalService {
 
 		Rental rentalToUpdate = this.modelMapperService.forRequest().map(updateRentalRequest, Rental.class);
 		Car car = this.carRepository.findById(updateRentalRequest.getCarId());
-		/*
-		 * Rental rentalToUpdate =
-		 * rentalRepository.findById(updateRentalRequest.getId()); Car car = new Car();
-		 * car.setId(updateRentalRequest.getCarId());
-		 * rentalToUpdate.setPickupDate(updateRentalRequest.getPickupDate());
-		 * rentalToUpdate.setReturnDate(updateRentalRequest.getPickupDate());
-		 * rentalToUpdate.setTotalDate(updateRentalRequest.getTotalDate());
-		 * rentalToUpdate.setTotalPrice(updateRentalRequest.getTotalDate() *
-		 * car.getDailyPrice());
-		 */
 
 		LocalDate pickupDate = (updateRentalRequest.getPickupDate());
 		LocalDate returnDate = (updateRentalRequest.getReturnDate());
+		LocalDate isToday = LocalDate.now();
 		Long range = ChronoUnit.DAYS.between(pickupDate, returnDate);
 		rentalToUpdate.setTotalDate(range);
 		rentalToUpdate.setTotalPrice(range * car.getDailyPrice());
+
+		if (isToday.equals(rentalToUpdate.getReturnDate())) {
+			car.setCarState(1);
+		}
+		if ((rentalToUpdate.getPickUpCityId().equals(rentalToUpdate.getReturnedCityId()))) {
+			rentalToUpdate.setTotalPrice(rentalToUpdate.getTotalPrice()-750);
+		}
+
 		this.rentalRepository.save(rentalToUpdate);
 
 		return new SuccessResult("RENTAL.UPDATED");
