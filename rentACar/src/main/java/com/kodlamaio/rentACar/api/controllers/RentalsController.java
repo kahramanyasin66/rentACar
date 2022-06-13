@@ -20,10 +20,10 @@ import com.kodlamaio.rentACar.core.utilities.results.Result;
 
 @RestController
 @RequestMapping("/api/rentals")
-public class RentalController {
+public class RentalsController {
 	RentalService rentalService;
 
-	public RentalController(RentalService rentalService) {
+	public RentalsController(RentalService rentalService) {
 
 		this.rentalService = rentalService;
 	}

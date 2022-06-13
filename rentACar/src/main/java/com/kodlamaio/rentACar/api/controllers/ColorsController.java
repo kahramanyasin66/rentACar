@@ -19,10 +19,10 @@ import com.kodlamaio.rentACar.core.utilities.results.Result;
 
 @RestController
 @RequestMapping("api/colors")
-public class ColorController {
+public class ColorsController {
 	ColorService colorService;
 
-	public ColorController(ColorService colorService) {
+	public ColorsController(ColorService colorService) {
 
 		this.colorService = colorService;
 	}

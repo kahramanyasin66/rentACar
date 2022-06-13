@@ -26,11 +26,12 @@ import com.kodlamaio.rentACar.entities.concretes.Maintenance;
 public class MaintenanceManager implements MaintenanceService {
 
 	MaintenanceRepository maintenanceRepository;
-	CarRepository carRepository ;
+	CarRepository carRepository;
 	ModelMapperService modelMapperService;
 
 	@Autowired
-	public MaintenanceManager(MaintenanceRepository maintenanceRepository, ModelMapperService modelMapperService,CarRepository carRepository) {
+	public MaintenanceManager(MaintenanceRepository maintenanceRepository, ModelMapperService modelMapperService,
+			CarRepository carRepository) {
 
 		this.maintenanceRepository = maintenanceRepository;
 		this.modelMapperService = modelMapperService;
@@ -50,8 +51,8 @@ public class MaintenanceManager implements MaintenanceService {
 		 */
 
 		Maintenance maintenance = this.modelMapperService.forRequest().map(createMaintenanceRequest, Maintenance.class);
-		Car car = this.carRepository.findById(createMaintenanceRequest.getCarId());		
-		car.setCarState(1);		
+		Car car = this.carRepository.findById(createMaintenanceRequest.getCarId());
+		car.setCarState(1);
 
 		this.maintenanceRepository.save(maintenance);
 
@@ -63,23 +64,24 @@ public class MaintenanceManager implements MaintenanceService {
 
 		int carId = deleteMaintenanceRequest.getId();
 		this.maintenanceRepository.deleteById(carId);
-		return new SuccessResult("MAINTENANCE.DELETED");		
-		
+		return new SuccessResult("MAINTENANCE.DELETED");
+
 	}
 
 	@Override
 	public Result update(UpdateMaintenanceRequest updateMaintenanceRequest) {
 		/*
-		Maintenance maintenanceToUpdate = maintenanceRepository.findById(updateMaintenanceRequest.getId());
-		Car car = new Car();
-		car.setId(updateMaintenanceRequest.getCarId());
-		maintenanceToUpdate.setDateReturned(updateMaintenanceRequest.getDateReturned());
-		maintenanceToUpdate.setDateSent(updateMaintenanceRequest.getDateSent());
-		maintenanceToUpdate.setDescription(updateMaintenanceRequest.getDescription());
-		maintenanceToUpdate.setCar(car);
-		*/
-		Maintenance maintenanceToUpdate = this.modelMapperService.forRequest().map(updateMaintenanceRequest, Maintenance.class);
-		
+		 * Maintenance maintenanceToUpdate =
+		 * maintenanceRepository.findById(updateMaintenanceRequest.getId()); Car car =
+		 * new Car(); car.setId(updateMaintenanceRequest.getCarId());
+		 * maintenanceToUpdate.setDateReturned(updateMaintenanceRequest.getDateReturned(
+		 * )); maintenanceToUpdate.setDateSent(updateMaintenanceRequest.getDateSent());
+		 * maintenanceToUpdate.setDescription(updateMaintenanceRequest.getDescription())
+		 * ; maintenanceToUpdate.setCar(car);
+		 */
+		Maintenance maintenanceToUpdate = this.modelMapperService.forRequest().map(updateMaintenanceRequest,
+				Maintenance.class);
+
 		this.maintenanceRepository.save(maintenanceToUpdate);
 
 		return new SuccessResult("MAINTENANCE.UPDATED");
@@ -88,23 +90,26 @@ public class MaintenanceManager implements MaintenanceService {
 	@Override
 	public DataResult<List<ListMaintenanceResponse>> getAll() {
 		List<Maintenance> maintenances = this.maintenanceRepository.findAll();
-		List<ListMaintenanceResponse> response = maintenances.stream().map(maintenance -> this.modelMapperService.forResponse()
-				.map(maintenances, ListMaintenanceResponse.class))
+		List<ListMaintenanceResponse> response = maintenances.stream().map(
+				maintenance -> this.modelMapperService.forResponse().map(maintenances, ListMaintenanceResponse.class))
 				.collect(Collectors.toList());
 
-		return new SuccessDataResult<List<ListMaintenanceResponse>>(response,"MAİNTENANCES.GETTED");
+		return new SuccessDataResult<List<ListMaintenanceResponse>>(response, "MAINTENANCES.GETTED");
 
-		//new  SuccessDataResult<List<MaintenanceResponse>>(maintenanceRepository.findAll());
+		// new
+		// SuccessDataResult<List<MaintenanceResponse>>(maintenanceRepository.findAll());
 	}
 
 	@Override
 	public DataResult<MaintenanceResponse> getById(int id) {
 		Maintenance maintenance = this.maintenanceRepository.findById(id);
-		MaintenanceResponse response = this.modelMapperService.forResponse().map(maintenance, MaintenanceResponse.class);
+		MaintenanceResponse response = this.modelMapperService.forResponse().map(maintenance,
+				MaintenanceResponse.class);
 
-		return new SuccessDataResult<MaintenanceResponse>(response,"MAINTENANCE.GETTED");
-		
-		//new SuccessDataResult<MaintenanceResponse>(this.maintenanceRepository.findById(maintenanceResponse.getId()));
+		return new SuccessDataResult<MaintenanceResponse>(response, "MAINTENANCE.GETTED");
+
+		// new
+		// SuccessDataResult<MaintenanceResponse>(this.maintenanceRepository.findById(maintenanceResponse.getId()));
 	}
 
 }
