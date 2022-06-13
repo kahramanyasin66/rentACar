@@ -2,6 +2,8 @@ package com.kodlamaio.rentACar.api.controllers;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,12 +30,12 @@ public class MaintenancesController {
 	}
 
 	@PostMapping("/add")
-	public Result add(@RequestBody CreateMaintenanceRequest createMaintenanceRequest) {
+	public Result add(@RequestBody @Valid CreateMaintenanceRequest createMaintenanceRequest) {
 		return this.maintenanceService.add(createMaintenanceRequest);
 	}
 
 	@PostMapping("/update")
-	public Result update(@RequestBody UpdateMaintenanceRequest updateMaintenanceRequest) {
+	public Result update(@RequestBody @Valid UpdateMaintenanceRequest updateMaintenanceRequest) {
 		return this.maintenanceService.update(updateMaintenanceRequest);
 	}
 	@PostMapping("/delete")

@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AdditionalServiceResponse {
+	
 	private int day;
 	private double totalPrice;
 	private AdditionalServiceItem additionalServiceItemId;

@@ -2,10 +2,13 @@ package com.kodlamaio.rentACar.api.controllers;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kodlamaio.rentACar.business.abstracts.ColorService;
@@ -28,13 +31,13 @@ public class ColorsController {
 	}
 
 	@PostMapping("/add")
-	private Result add(@RequestBody CreateColorRequest createColorRequest) {
+	private Result add(@RequestBody @Valid CreateColorRequest createColorRequest) {
 		return this.colorService.add(createColorRequest);
 
 	}
 
 	@PostMapping("/update")
-	public Result update(@RequestBody UpdateColorRequest updateColorRequest) {
+	public Result update(@RequestBody @Valid UpdateColorRequest updateColorRequest) {
 		return this.colorService.update(updateColorRequest);
 	}
 
@@ -48,7 +51,7 @@ public class ColorsController {
 		return this.colorService.getAll();
 	}
 	@GetMapping("/getbyid")
-	public DataResult<ColorResponse> getById(int id){
+	public DataResult<ColorResponse> getById(@RequestParam int id){
 		return this.colorService.getById(id);
 	}
 

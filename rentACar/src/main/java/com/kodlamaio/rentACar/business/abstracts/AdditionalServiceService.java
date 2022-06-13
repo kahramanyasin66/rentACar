@@ -1,5 +1,7 @@
 package com.kodlamaio.rentACar.business.abstracts;
 
+import java.util.List;
+
 import com.kodlamaio.rentACar.business.requests.additionalServices.CreateAdditionalServiceRequest;
 import com.kodlamaio.rentACar.business.requests.additionalServices.DeleteAdditionalServiceRequest;
 import com.kodlamaio.rentACar.business.requests.additionalServices.UpdateAdditionalServiceRequest;
@@ -15,7 +17,7 @@ public interface AdditionalServiceService {
 
 	Result delete(DeleteAdditionalServiceRequest deleteAdditionalServiceRequest);
 
-	DataResult<ListAdditionalServiceResponse> getall();
+	DataResult<List<ListAdditionalServiceResponse>> getall();
 
 	DataResult<AdditionalServiceResponse> getById(int id);
 

@@ -2,6 +2,8 @@ package com.kodlamaio.rentACar.api.controllers;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,13 +31,13 @@ public class UsersController {
 	}
 
 	@PostMapping("/add")
-	public Result add(@RequestBody CreateUserRequest createUserRequest) {
+	public Result add(@RequestBody @Valid CreateUserRequest createUserRequest) {
 		return this.userService.add(createUserRequest);
 
 	}
 
 	@PostMapping("/update")
-	public Result update(@RequestBody UpdateUserRequest updateUserRequest) {
+	public Result update(@RequestBody @Valid UpdateUserRequest updateUserRequest) {
 		return this.userService.update(updateUserRequest);
 	}
 
