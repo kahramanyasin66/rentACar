@@ -62,7 +62,7 @@ public class AdditionalServiceItemManager implements AdditionalServiceItemServic
 	public DataResult<List<ListAdditionalServiceItemResponse>> getall() {
 		List<AdditionalServiceItem> additionalServiceItems = this.additionalServiceItemRepository.findAll();
 		List<ListAdditionalServiceItemResponse> response = additionalServiceItems.stream()
-				.map(additionalServiceItem -> this.modelMapperService.forResponse().map(additionalServiceItems,
+				.map(additionalServiceItem -> this.modelMapperService.forResponse().map(additionalServiceItem,
 						ListAdditionalServiceItemResponse.class))
 				.collect(Collectors.toList());
 

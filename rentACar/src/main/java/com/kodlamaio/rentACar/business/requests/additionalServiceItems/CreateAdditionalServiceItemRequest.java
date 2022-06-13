@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CreateAdditionalServiceItemRequest {
 	private String name;
-
+	private double additionalPrice;
 }

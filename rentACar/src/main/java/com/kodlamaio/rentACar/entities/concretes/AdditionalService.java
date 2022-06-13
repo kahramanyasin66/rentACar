@@ -23,9 +23,7 @@ public class AdditionalService {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="id")
 	private int id;
-	
-	@Column(name="day")
-	private int day;
+
 	
 	@Column(name="totalPrice")
 	private double totalPrice;

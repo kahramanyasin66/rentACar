@@ -27,6 +27,9 @@ public class AdditionalServiceItem {
 
 	@Column(name = "name")
 	private String name;
+	
+	@Column(name="additional_price")
+	private double additionalPrice;
 
 	@OneToMany(mappedBy = "additionalServiceItem")
 	private List<AdditionalService> additionalServices;

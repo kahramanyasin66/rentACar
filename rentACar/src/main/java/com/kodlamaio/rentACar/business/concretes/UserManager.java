@@ -1,9 +1,12 @@
 package com.kodlamaio.rentACar.business.concretes;
 
+
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.kodlamaio.rentACar.business.abstracts.UserService;
@@ -69,6 +72,19 @@ public class UserManager implements UserService {
 		User userId = this.userRepository.findById(id);
 		UserResponse response = this.modelMapperService.forResponse().map(userId, UserResponse.class);
 		return new SuccessDataResult<UserResponse>(response, "USER:GETTED");
+	}
+
+	@Override
+	public DataResult<List<ListUserResponse>> getAll(Integer pageNo, Integer pageSize) {
+		Pageable pageable = PageRequest.of(pageNo-1,pageSize);
+		
+		
+		List<User> users = this.userRepository.findAll(pageable).getContent();
+		List<ListUserResponse> response = users.stream()
+				.map(user -> this.modelMapperService.forResponse().map(user, ListUserResponse.class))
+				.collect(Collectors.toList());
+		return new SuccessDataResult<List<ListUserResponse>>(response);
+		
 	}
 
 }

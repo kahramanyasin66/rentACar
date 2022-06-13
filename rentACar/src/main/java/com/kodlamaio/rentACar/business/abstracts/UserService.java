@@ -16,6 +16,6 @@ public interface UserService {
 	Result delete(DeleteUserRequest deleteUserRequest);
 	DataResult<List<ListUserResponse>> getAll();
 	DataResult<UserResponse> getById(int id);
-	
+	DataResult<List<ListUserResponse>> getAll(Integer pageNo , Integer pageSize);
 
 }

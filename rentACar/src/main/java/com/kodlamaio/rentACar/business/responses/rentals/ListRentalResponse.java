@@ -12,7 +12,7 @@ public class ListRentalResponse {
 	private int id;
 	private LocalDate pickupDate;
 	private LocalDate returnDate;
-	private long totalDate;
+	private int totalDate;
 	private double totalPrice ;
 	private int carId;
 

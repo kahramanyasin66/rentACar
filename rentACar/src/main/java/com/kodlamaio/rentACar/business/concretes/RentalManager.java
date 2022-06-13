@@ -54,7 +54,7 @@ public class RentalManager implements RentalService {
 
 		LocalDate pickupDate = (createRentalRequest.getPickupDate());
 		LocalDate returnDate = (createRentalRequest.getReturnDate());
-		Long range = ChronoUnit.DAYS.between(pickupDate, returnDate);
+		int range =(int)ChronoUnit.DAYS.between(pickupDate, returnDate);
 
 		rental.setTotalDate(range);
 		rental.setTotalPrice(range * car.getDailyPrice());
@@ -80,7 +80,7 @@ public class RentalManager implements RentalService {
 		LocalDate pickupDate = (updateRentalRequest.getPickupDate());
 		LocalDate returnDate = (updateRentalRequest.getReturnDate());
 		LocalDate isToday = LocalDate.now();
-		Long range = ChronoUnit.DAYS.between(pickupDate, returnDate);
+		int range =(int) ChronoUnit.DAYS.between(pickupDate, returnDate);
 		rentalToUpdate.setTotalDate(range);
 		rentalToUpdate.setTotalPrice(range * car.getDailyPrice());
 

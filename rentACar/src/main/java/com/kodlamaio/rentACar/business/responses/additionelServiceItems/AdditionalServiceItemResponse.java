@@ -8,5 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AdditionalServiceItemResponse {
-private String name;
+	private String name;
+	private double additionalPrice;
 }

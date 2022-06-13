@@ -9,4 +9,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UpdateAdditionalServiceItemRequest {
 	private String name;
+	private double additionalPrice;
 }

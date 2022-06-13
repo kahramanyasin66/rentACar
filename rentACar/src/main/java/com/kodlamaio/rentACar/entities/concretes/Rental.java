@@ -36,7 +36,7 @@ public class Rental {
 	private LocalDate returnDate;
 
 	@Column(name = "total_date")
-	private long totalDate;
+	private int totalDate;
 
 	@Column(name = "total_price")
 	private double totalPrice;

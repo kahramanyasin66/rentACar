@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
 
+import com.kodlamaio.rentACar.business.abstracts.AdditionalServiceItemService;
 import com.kodlamaio.rentACar.business.abstracts.AdditionalServiceService;
 import com.kodlamaio.rentACar.business.requests.additionalServices.CreateAdditionalServiceRequest;
 import com.kodlamaio.rentACar.business.requests.additionalServices.DeleteAdditionalServiceRequest;
@@ -18,28 +19,36 @@ import com.kodlamaio.rentACar.core.utilities.results.DataResult;
 import com.kodlamaio.rentACar.core.utilities.results.Result;
 import com.kodlamaio.rentACar.core.utilities.results.SuccessDataResult;
 import com.kodlamaio.rentACar.core.utilities.results.SuccessResult;
+import com.kodlamaio.rentACar.dataAccess.abstracts.AdditionalServiceItemRepository;
 import com.kodlamaio.rentACar.dataAccess.abstracts.AdditionalServiceRepository;
+import com.kodlamaio.rentACar.dataAccess.abstracts.RentalRepository;
 import com.kodlamaio.rentACar.entities.concretes.AdditionalService;
+import com.kodlamaio.rentACar.entities.concretes.AdditionalServiceItem;
+import com.kodlamaio.rentACar.entities.concretes.Rental;
 
 @Service
 public class AdditionalServiceManager implements AdditionalServiceService {
-
-	AdditionalServiceRepository additionalServiceRepository;
-	ModelMapperService modelMapperService;
-
 	@Autowired
-	public AdditionalServiceManager(AdditionalServiceRepository additionalServiceRepository,
-			ModelMapperService modelMapperService) {
-
-		this.additionalServiceRepository = additionalServiceRepository;
-		this.modelMapperService = modelMapperService;
-	}
+	AdditionalServiceRepository additionalServiceRepository;
+	@Autowired
+	ModelMapperService modelMapperService;
+	@Autowired
+	AdditionalServiceItemRepository additionalServiceItemRepository;
+	@Autowired
+	RentalRepository rentalRepository;
 
 	@Override
 	public Result add(CreateAdditionalServiceRequest createAdditionalServiceRequest) {
 		AdditionalService additionalService = this.modelMapperService.forRequest().map(createAdditionalServiceRequest,
 				AdditionalService.class);
+		Rental rental = this.rentalRepository.findById(createAdditionalServiceRequest.getRentalId());
+		AdditionalServiceItem additionalServiceItem = this.additionalServiceItemRepository
+				.findById(createAdditionalServiceRequest.getAdditionalServiceItemId());
+		double  totalPrice =calculateTotalPrice(rental.getTotalDate(),additionalServiceItem.getAdditionalPrice());
+		additionalService.setTotalPrice(totalPrice);
+
 		this.additionalServiceRepository.save(additionalService);
+
 		return new SuccessResult("ADDITIONAL_SERVİCE.ADDED");
 	}
 
@@ -75,10 +84,15 @@ public class AdditionalServiceManager implements AdditionalServiceService {
 	@Override
 	public DataResult<AdditionalServiceResponse> getById(int id) {
 		AdditionalService additionalService = this.additionalServiceRepository.findById(id);
-		AdditionalServiceResponse response = this.modelMapperService.forResponse()
-				.map(additionalService, AdditionalServiceResponse.class);		
+		AdditionalServiceResponse response = this.modelMapperService.forResponse().map(additionalService,
+				AdditionalServiceResponse.class);
 
-		return new SuccessDataResult<AdditionalServiceResponse>(response,"ADDINATIONAL_SERVİCE.GETTED");
+		return new SuccessDataResult<AdditionalServiceResponse>(response, "ADDINATIONAL_SERVİCE.GETTED");
+	}
+
+	private double calculateTotalPrice(int days, double price) {
+		return days*price;
+
 	}
 
 }
