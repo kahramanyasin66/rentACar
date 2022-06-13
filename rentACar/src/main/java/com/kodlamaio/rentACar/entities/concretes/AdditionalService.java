@@ -28,7 +28,7 @@ public class AdditionalService {
 	private int day;
 	
 	@Column(name="totalPrice")
-	private double totalPrice ;
+	private double totalPrice;
 	
 	@ManyToOne
 	@JoinColumn(name="additional_service_item_id")
