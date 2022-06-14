@@ -1,5 +1,6 @@
 package com.kodlamaio.rentACar.entities.concretes;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -34,6 +35,9 @@ public class User {
 	
 	@Column(name="tc_no")
 	private String tcNo;
+	
+	@Column(name="birth_date")
+	private LocalDate birthDate ;	
 	
 	@Column(name="email")
 	private String email;
