@@ -1,6 +1,5 @@
 package com.kodlamaio.rentACar.business.requests.cars;
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
@@ -15,10 +14,9 @@ import lombok.NoArgsConstructor;
 public class CreateCarRequest {
 	@NotEmpty
 	@NotBlank
-	@Size(min=2,max=50)
+	@Size(min = 2, max = 50)
 	private String description;
-	
-	@Min(value=100)
+
 	@NotEmpty
 	private double dailyPrice;
 	private double kilometer;
@@ -26,4 +24,5 @@ public class CreateCarRequest {
 	private int brandId;
 	private int colorId;
 	private int cityId;
+	private int carScore;
 }

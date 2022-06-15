@@ -10,7 +10,7 @@ import com.kodlamaio.rentACar.entities.concretes.User;
 import tr.gov.nvi.tckimlik.WS.KPSPublicSoapProxy;
 
 @Service
-public class MernisKpsAdaptor implements PersonCheckService {
+public class MernisKpsAdapter implements PersonCheckService {
 
 	@Override
 	public boolean checkPerson(User user) throws NumberFormatException, RemoteException {

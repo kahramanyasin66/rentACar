@@ -16,5 +16,6 @@ public class CarResponse {
 	private int carState;
 	private int brandId;
 	private int colorId;
+	private int carScore;
 
 }

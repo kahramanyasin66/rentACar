@@ -12,7 +12,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -39,9 +38,12 @@ public class Car {
 
 	@Column(name = "plate")
 	private String plate;
-	
+
 	@Column(name = "car_state")
 	private int carState;
+
+	@Column(name = "car_score")
+	private int carScore;
 
 	@ManyToOne
 	@JoinColumn(name = "brand_id") // veritabanında markaları bu şekilde tut bu tabloda
@@ -49,16 +51,16 @@ public class Car {
 
 	@ManyToOne
 	@JoinColumn(name = "color_id")
-	private Color color;	
+	private Color color;
 
-	@OneToMany(mappedBy = "car") // bakımdaki arabalar 
+	@OneToMany(mappedBy = "car") // bakımdaki arabalar
 	private List<Maintenance> maintenances;
-	
+
 	@OneToMany(mappedBy = "car") // kiradaki arabalar
-	private List<Rental> rentals; 
-	
+	private List<Rental> rentals;
+
 	@ManyToOne
-	@JoinColumn(name="city_id")
-	private City city ;
+	@JoinColumn(name = "city_id")
+	private City city;
 
 }
