@@ -1,6 +1,7 @@
 package com.kodlamaio.rentACar.core.utilities.adapters.concretes;
 
 import java.util.HashMap;
+
 import java.util.Random;
 
 import org.springframework.stereotype.Service;

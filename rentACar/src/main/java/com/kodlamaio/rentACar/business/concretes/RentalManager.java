@@ -35,9 +35,9 @@ public class RentalManager implements RentalService {
 
 	RentalRepository rentalRepository;
 	CarRepository carRepository;
-	CityRepository cityRepository;
+	CityRepository cityRepository;	
 	UserRepository userRepository;
-	ModelMapperService modelMapperService;
+	ModelMapperService modelMapperService;	
 	FindexCheckService findexCheckService;
 
 	@Autowired
