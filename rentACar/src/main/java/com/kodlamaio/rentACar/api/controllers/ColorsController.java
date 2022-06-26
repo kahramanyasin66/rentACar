@@ -23,7 +23,7 @@ import com.kodlamaio.rentACar.core.utilities.results.Result;
 @RestController
 @RequestMapping("api/colors")
 public class ColorsController {
-	ColorService colorService;
+	private ColorService colorService;
 
 	public ColorsController(ColorService colorService) {
 
@@ -50,10 +50,10 @@ public class ColorsController {
 	public DataResult<List<ListColorResponse>> getAll() {
 		return this.colorService.getAll();
 	}
+
 	@GetMapping("/getbyid")
-	public DataResult<ColorResponse> getById(@RequestParam int id){
+	public DataResult<ColorResponse> getById(@RequestParam int id) {
 		return this.colorService.getById(id);
 	}
 
-	
 }

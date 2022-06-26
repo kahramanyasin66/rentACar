@@ -15,8 +15,6 @@ import com.kodlamaio.rentACar.business.requests.users.DeleteUserRequest;
 import com.kodlamaio.rentACar.business.requests.users.UpdateUserRequest;
 import com.kodlamaio.rentACar.business.responses.users.ListUserResponse;
 import com.kodlamaio.rentACar.business.responses.users.UserResponse;
-import com.kodlamaio.rentACar.core.utilities.adapters.abstracts.PersonCheckService;
-import com.kodlamaio.rentACar.core.utilities.exceptions.BusinessException;
 import com.kodlamaio.rentACar.core.utilities.mapping.ModelMapperService;
 import com.kodlamaio.rentACar.core.utilities.results.DataResult;
 import com.kodlamaio.rentACar.core.utilities.results.Result;
@@ -29,14 +27,11 @@ import com.kodlamaio.rentACar.entities.concretes.User;
 public class UserManager implements UserService {
 	UserRepository userRepository;
 	ModelMapperService modelMapperService;	
-	PersonCheckService personCheckService;
-
 
 	@Autowired
-	public UserManager(UserRepository userRepository, ModelMapperService modelMapperService,PersonCheckService personCheckService) {
+	public UserManager(UserRepository userRepository, ModelMapperService modelMapperService) {
 		this.userRepository = userRepository;
-		this.modelMapperService = modelMapperService;
-		this.personCheckService=personCheckService;
+		this.modelMapperService = modelMapperService;	
 	}
 
 	@Override
@@ -44,7 +39,7 @@ public class UserManager implements UserService {
 		
 	
 		User user = this.modelMapperService.forRequest().map(createUserRequest, User.class);
-		checkUserExistsByNationality(user);		
+	
 		this.userRepository.save(user);
 		return new SuccessResult("USER.ADDED");
 
@@ -94,12 +89,6 @@ public class UserManager implements UserService {
 
 	}
 
-	private void checkUserExistsByNationality(User user)throws NumberFormatException, RemoteException {
-
-		if (!personCheckService.checkPerson(user)) {
-
-			throw new BusinessException("USER.WASN'T.ADDED");
-		}
-	}
+	
 
 }

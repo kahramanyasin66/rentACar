@@ -18,7 +18,7 @@ import com.kodlamaio.rentACar.core.utilities.results.Result;
 import com.kodlamaio.rentACar.core.utilities.results.SuccessDataResult;
 import com.kodlamaio.rentACar.core.utilities.results.SuccessResult;
 import com.kodlamaio.rentACar.dataAccess.abstracts.AdditionalServiceItemRepository;
-import com.kodlamaio.rentACar.entities.concretes.AdditionalServiceItem;
+import com.kodlamaio.rentACar.entities.concretes.AdditionalItem;
 
 @Service
 public class AdditionalServiceItemManager implements AdditionalServiceItemService {
@@ -34,8 +34,8 @@ public class AdditionalServiceItemManager implements AdditionalServiceItemServic
 
 	@Override
 	public Result add(CreateAdditionalServiceItemRequest createAdditionalServiceItemRequest) {
-		AdditionalServiceItem additionalServiceItem = this.modelMapperService.forRequest()
-				.map(createAdditionalServiceItemRequest, AdditionalServiceItem.class);
+		AdditionalItem additionalServiceItem = this.modelMapperService.forRequest()
+				.map(createAdditionalServiceItemRequest, AdditionalItem.class);
 		this.additionalServiceItemRepository.save(additionalServiceItem);
 
 		return new SuccessResult("ADDINATIONAL_SERVICE_ITEM.ADDED");
@@ -43,24 +43,24 @@ public class AdditionalServiceItemManager implements AdditionalServiceItemServic
 
 	@Override
 	public Result update(UpdateAdditionalServiceItemRequest updateAdditionalServiceItemRequest) {
-		AdditionalServiceItem updateToAdditionalServiceItem = this.modelMapperService.forRequest()
-				.map(updateAdditionalServiceItemRequest, AdditionalServiceItem.class);
+		AdditionalItem updateToAdditionalServiceItem = this.modelMapperService.forRequest()
+				.map(updateAdditionalServiceItemRequest, AdditionalItem.class);
 		this.additionalServiceItemRepository.save(updateToAdditionalServiceItem);
 		return new SuccessResult("ADDINATIONAL_SERVICE_ITEM.UPDATED");
 	}
 
 	@Override
 	public Result delete(DeleteAdditionalServiceItemRequest deleteAdditionalServiceItemRequest) {
-		AdditionalServiceItem additionalServiceItemId = this.additionalServiceItemRepository
+		AdditionalItem additionalServiceItemId = this.additionalServiceItemRepository
 				.findById(deleteAdditionalServiceItemRequest.getId());
-		this.modelMapperService.forRequest().map(additionalServiceItemId, AdditionalServiceItem.class);
+		this.modelMapperService.forRequest().map(additionalServiceItemId, AdditionalItem.class);
 
 		return new SuccessResult("ADDINATIONAL_SERVICE_ITEM.DELETED");
 	}
 
 	@Override
 	public DataResult<List<ListAdditionalServiceItemResponse>> getall() {
-		List<AdditionalServiceItem> additionalServiceItems = this.additionalServiceItemRepository.findAll();
+		List<AdditionalItem> additionalServiceItems = this.additionalServiceItemRepository.findAll();
 		List<ListAdditionalServiceItemResponse> response = additionalServiceItems.stream()
 				.map(additionalServiceItem -> this.modelMapperService.forResponse().map(additionalServiceItem,
 						ListAdditionalServiceItemResponse.class))
@@ -71,7 +71,7 @@ public class AdditionalServiceItemManager implements AdditionalServiceItemServic
 
 	@Override
 	public DataResult<AdditionalServiceItemResponse> getById(int id) {
-		AdditionalServiceItem additionalServiceItemId = this.additionalServiceItemRepository.findById(id);
+		AdditionalItem additionalServiceItemId = this.additionalServiceItemRepository.findById(id);
 
 		AdditionalServiceItemResponse response = this.modelMapperService.forResponse().map(additionalServiceItemId,
 				AdditionalServiceItemResponse.class);

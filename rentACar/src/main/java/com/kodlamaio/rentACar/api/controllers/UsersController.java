@@ -32,7 +32,8 @@ public class UsersController {
 	}
 
 	@PostMapping("/add")
-	public Result add(@RequestBody @Valid CreateUserRequest createUserRequest) throws NumberFormatException, RemoteException {
+	public Result add(@RequestBody @Valid CreateUserRequest createUserRequest)
+			throws NumberFormatException, RemoteException {
 		return this.userService.add(createUserRequest);
 
 	}
@@ -56,11 +57,10 @@ public class UsersController {
 	public DataResult<UserResponse> getById(@RequestParam int id) {
 		return this.userService.getById(id);
 	}
-	
+
 	@GetMapping("/getallbypage")
-	public DataResult<List<ListUserResponse>> getAllByPage (@RequestParam int pageSize,int pageNo){
-		return this.userService.getAll(pageSize,pageNo);		
+	public DataResult<List<ListUserResponse>> getAllByPage(@RequestParam int pageSize, int pageNo) {
+		return this.userService.getAll(pageSize, pageNo);
 	}
-	
 
 }

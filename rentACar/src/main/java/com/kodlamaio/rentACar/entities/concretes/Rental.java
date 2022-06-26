@@ -46,8 +46,8 @@ public class Rental {
 	private Car car;
 	
 	@ManyToOne
-	@JoinColumn(name="user_id")
-	User user;	
+	@JoinColumn(name="customer_id")
+	Customer customer;	
 	
 	@ManyToOne
 	@JoinColumn (name ="pick_up_city_id", referencedColumnName = "id")
@@ -58,9 +58,7 @@ public class Rental {
 	City returnedCityId ;
 	
 	@OneToMany(mappedBy = "rental")
-	private List<AdditionalService> additionalServices;
-	
-	
+	private List<OrderedAdditionalItems> orderedAdditionalItems;	
 	
 
 }

@@ -27,7 +27,7 @@ public class RentalDetailsController {
 	private RentalDetailService rentalDetailService;
 
 	public RentalDetailsController(RentalDetailService rentalDetailService) {
-		
+
 		this.rentalDetailService = rentalDetailService;
 	}
 

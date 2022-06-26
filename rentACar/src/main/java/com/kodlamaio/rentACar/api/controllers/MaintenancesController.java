@@ -23,7 +23,7 @@ import com.kodlamaio.rentACar.core.utilities.results.Result;
 @RestController
 @RequestMapping("api/maintenances")
 public class MaintenancesController {
-	MaintenanceService maintenanceService;
+	private MaintenanceService maintenanceService;
 
 	public MaintenancesController(MaintenanceService maintenanceService) {
 		this.maintenanceService = maintenanceService;
@@ -38,6 +38,7 @@ public class MaintenancesController {
 	public Result update(@RequestBody @Valid UpdateMaintenanceRequest updateMaintenanceRequest) {
 		return this.maintenanceService.update(updateMaintenanceRequest);
 	}
+
 	@PostMapping("/delete")
 	public Result delete(@RequestBody DeleteMaintenanceRequest deleteMaintenanceRequest) {
 		return this.maintenanceService.delete(deleteMaintenanceRequest);

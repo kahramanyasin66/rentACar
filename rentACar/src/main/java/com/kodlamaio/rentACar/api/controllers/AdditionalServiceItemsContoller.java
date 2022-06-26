@@ -23,7 +23,7 @@ import com.kodlamaio.rentACar.core.utilities.results.Result;
 @RestController
 @RequestMapping("/api/additional_service_items")
 public class AdditionalServiceItemsContoller {
-	AdditionalServiceItemService additionalServiceItemService;
+	private AdditionalServiceItemService additionalServiceItemService;
 
 	public AdditionalServiceItemsContoller(AdditionalServiceItemService additionalServiceItemService) {
 		this.additionalServiceItemService = additionalServiceItemService;

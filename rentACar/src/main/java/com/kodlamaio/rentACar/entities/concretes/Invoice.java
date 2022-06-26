@@ -27,9 +27,12 @@ public class Invoice {
 	private int invoiceNumber;
 	
 	@Column(name = "totalPrice")
-	private double totalPrice;
+	private double totalPrice;	
+
+	@Column(name = "state")
+	private int  state;
 	
-	@ManyToOne
+	@ManyToOne  //yok 
 	@JoinColumn(name = "rental_details_id")
 	private RentalDetail rentalDetail; 
 

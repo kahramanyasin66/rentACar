@@ -18,15 +18,17 @@ public class InvoicesController {
 	private InvoiceService invoiceService;
 
 	public InvoicesController(InvoiceService invoiceService) {
-		
+
 		this.invoiceService = invoiceService;
 	}
+
 	@GetMapping("/getall")
-	public DataResult<List<ListInvoiceResponse>> getAll(){
+	public DataResult<List<ListInvoiceResponse>> getAll() {
 		return this.invoiceService.getAll();
 	}
+
 	@GetMapping("/getbyid")
-	public DataResult<InvoiceResponse> getById(@RequestParam int id){
+	public DataResult<InvoiceResponse> getById(@RequestParam int id) {
 		return this.invoiceService.getById(id);
 	}
 

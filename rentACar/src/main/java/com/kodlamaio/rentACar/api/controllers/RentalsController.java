@@ -23,7 +23,7 @@ import com.kodlamaio.rentACar.core.utilities.results.Result;
 @RestController
 @RequestMapping("/api/rentals")
 public class RentalsController {
-	RentalService rentalService;
+	private RentalService rentalService;
 
 	public RentalsController(RentalService rentalService) {
 

@@ -20,8 +20,8 @@ import com.kodlamaio.rentACar.core.utilities.results.SuccessResult;
 import com.kodlamaio.rentACar.dataAccess.abstracts.AdditionalServiceItemRepository;
 import com.kodlamaio.rentACar.dataAccess.abstracts.AdditionalServiceRepository;
 import com.kodlamaio.rentACar.dataAccess.abstracts.RentalRepository;
-import com.kodlamaio.rentACar.entities.concretes.AdditionalService;
-import com.kodlamaio.rentACar.entities.concretes.AdditionalServiceItem;
+import com.kodlamaio.rentACar.entities.concretes.AdditonalService;
+import com.kodlamaio.rentACar.entities.concretes.AdditionalItem;
 import com.kodlamaio.rentACar.entities.concretes.Rental;
 
 @Service
@@ -37,10 +37,10 @@ public class AdditionalServiceManager implements AdditionalServiceService {
 
 	@Override
 	public Result add(CreateAdditionalServiceRequest createAdditionalServiceRequest) {
-		AdditionalService additionalService = this.modelMapperService.forRequest().map(createAdditionalServiceRequest,
-				AdditionalService.class);
+		AdditonalService additionalService = this.modelMapperService.forRequest().map(createAdditionalServiceRequest,
+				AdditonalService.class);
 		Rental rental = this.rentalRepository.findById(createAdditionalServiceRequest.getRentalId());
-		AdditionalServiceItem additionalServiceItem = this.additionalServiceItemRepository
+		AdditionalItem additionalServiceItem = this.additionalServiceItemRepository
 				.findById(createAdditionalServiceRequest.getAdditionalServiceItemId());
 		double  totalPrice =calculateTotalPrice(rental.getTotalDate(),additionalServiceItem.getAdditionalPrice());
 		additionalService.setTotalPrice(totalPrice);
@@ -52,8 +52,8 @@ public class AdditionalServiceManager implements AdditionalServiceService {
 
 	@Override
 	public Result update(UpdateAdditionalServiceRequest updateAdditionalServiceRequest) {
-		AdditionalService updateToAdditionalService = this.modelMapperService.forRequest()
-				.map(updateAdditionalServiceRequest, AdditionalService.class);
+		AdditonalService updateToAdditionalService = this.modelMapperService.forRequest()
+				.map(updateAdditionalServiceRequest, AdditonalService.class);
 		this.additionalServiceRepository.save(updateToAdditionalService);
 
 		return new SuccessResult("ADDITIONAL_SERVİCE.UPDATED");
@@ -61,16 +61,16 @@ public class AdditionalServiceManager implements AdditionalServiceService {
 
 	@Override
 	public Result delete(DeleteAdditionalServiceRequest deleteAdditionalServiceRequest) {
-		AdditionalService additionalServiceId = this.additionalServiceRepository
+		AdditonalService additionalServiceId = this.additionalServiceRepository
 				.findById(deleteAdditionalServiceRequest.getId());
-		this.modelMapperService.forRequest().map(additionalServiceId, AdditionalService.class);
+		this.modelMapperService.forRequest().map(additionalServiceId, AdditonalService.class);
 		this.additionalServiceRepository.delete(additionalServiceId);
 		return new SuccessResult("ADDITIONAL_SERVİCE.DELETED");
 	}
 
 	@Override
 	public DataResult<List<ListAdditionalServiceResponse>> getall() {
-		List<AdditionalService> additionalServices = this.additionalServiceRepository.findAll();
+		List<AdditonalService> additionalServices = this.additionalServiceRepository.findAll();
 		List<ListAdditionalServiceResponse> response = additionalServices.stream()
 				.map(additionalService -> this.modelMapperService.forResponse().map(additionalService,
 						ListAdditionalServiceResponse.class))
@@ -81,7 +81,7 @@ public class AdditionalServiceManager implements AdditionalServiceService {
 
 	@Override
 	public DataResult<AdditionalServiceResponse> getById(int id) {
-		AdditionalService additionalService = this.additionalServiceRepository.findById(id);
+		AdditonalService additionalService = this.additionalServiceRepository.findById(id);
 		AdditionalServiceResponse response = this.modelMapperService.forResponse().map(additionalService,
 				AdditionalServiceResponse.class);
 

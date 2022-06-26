@@ -1,6 +1,6 @@
 package com.kodlamaio.rentACar.business.responses.additionalServices;
 
-import com.kodlamaio.rentACar.entities.concretes.AdditionalServiceItem;
+import com.kodlamaio.rentACar.entities.concretes.AdditionalItem;
 import com.kodlamaio.rentACar.entities.concretes.Rental;
 
 import lombok.AllArgsConstructor;
@@ -13,7 +13,7 @@ public class AdditionalServiceResponse {
 	
 	private int day;
 	private double totalPrice;
-	private AdditionalServiceItem additionalServiceItemId;
+	private AdditionalItem additionalServiceItemId;
 	private Rental rentalId ;
 	
 	

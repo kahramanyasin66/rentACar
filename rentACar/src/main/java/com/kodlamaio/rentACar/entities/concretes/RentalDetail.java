@@ -36,9 +36,9 @@ public class RentalDetail {
 
 	@ManyToOne
 	@JoinColumn(name = "additional_service_id")
-	private AdditionalService additionalService;
+	private OrderedAdditionalItems orderedAdditionalItems;
 
-	@OneToMany(mappedBy = "rentalDetail")
+	@OneToMany(mappedBy = "rental_detail")
 	private List<Invoice> invoices;
 
 }

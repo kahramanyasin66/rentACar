@@ -42,7 +42,7 @@ public class Car {
 	@Column(name = "car_state")
 	private int carState;
 
-	@Column(name = "car_score")
+	@Column(name = "car_score") // findexScore ile eşleştirme yapmak için 
 	private int carScore;
 
 	@ManyToOne
