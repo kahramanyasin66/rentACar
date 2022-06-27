@@ -25,7 +25,6 @@ import com.kodlamaio.rentACar.dataAccess.abstracts.CarRepository;
 import com.kodlamaio.rentACar.dataAccess.abstracts.CityRepository;
 import com.kodlamaio.rentACar.dataAccess.abstracts.IndividualCustomerRepository;
 import com.kodlamaio.rentACar.dataAccess.abstracts.RentalRepository;
-import com.kodlamaio.rentACar.dataAccess.abstracts.UserRepository;
 import com.kodlamaio.rentACar.entities.concretes.Car;
 import com.kodlamaio.rentACar.entities.concretes.City;
 import com.kodlamaio.rentACar.entities.concretes.IndividualCustomer;
@@ -37,36 +36,33 @@ public class RentalManager implements RentalService {
 	RentalRepository rentalRepository;
 	CarRepository carRepository;
 	CityRepository cityRepository;
-	UserRepository userRepository;
 	IndividualCustomerRepository individualCustomerRepository;
 	ModelMapperService modelMapperService;
 	FindexCheckService findexCheckService;
 
 	@Autowired
-	public RentalManager(RentalRepository rentalRepository, CarRepository carRepository,
-			ModelMapperService modelMapperService, CityRepository cityRepository, UserRepository userRepository,
-			FindexCheckService findexCheckService, IndividualCustomerRepository individualCustomerRepository) {
+	public RentalManager(RentalRepository rentalRepository, CarRepository carRepository, CityRepository cityRepository,
+			IndividualCustomerRepository individualCustomerRepository, ModelMapperService modelMapperService,
+			FindexCheckService findexCheckService) {
 
 		this.rentalRepository = rentalRepository;
 		this.carRepository = carRepository;
-		this.modelMapperService = modelMapperService;
 		this.cityRepository = cityRepository;
-		this.userRepository = userRepository;
-		this.findexCheckService = findexCheckService;
 		this.individualCustomerRepository = individualCustomerRepository;
+		this.modelMapperService = modelMapperService;
+		this.findexCheckService = findexCheckService;
 	}
+
+	/*----------------------------------------ADD-------------------------------------------------*/
 
 	@Override
 	public Result add(CreateRentalRequest createRentalRequest) {
-
 		Rental rental = this.modelMapperService.forRequest().map(createRentalRequest, Rental.class);
 
-		// check if car exist
-		// check if car meintenance
 		Car car = this.carRepository.findById(createRentalRequest.getCarId());
 		City pickUpCityId = this.cityRepository.findById(createRentalRequest.getPickUpCityId());
 		City returnCityId = this.cityRepository.findById(createRentalRequest.getReturnedCityId());
-		IndividualCustomer individualCustomerId = this.individualCustomerRepository
+		IndividualCustomer individualCustomer = this.individualCustomerRepository
 				.findById(createRentalRequest.getIndividualCustomerId());
 
 		LocalDate pickupDate = (createRentalRequest.getPickupDate());
@@ -77,24 +73,38 @@ public class RentalManager implements RentalService {
 		rental.setTotalPrice(range * car.getDailyPrice());
 		rental.setPickUpCityId(pickUpCityId);
 		rental.setReturnedCityId(returnCityId);
-		car.setCarState(3);
 
-		// iflerden kurtul
-		if (!(rental.getPickUpCityId().equals(rental.getReturnedCityId()))) { // farklı bir şehir için
-			rental.setTotalPrice(rental.getTotalPrice() + 750);
-		}
 		car.setCity(returnCityId);
+		checkIfCarState(createRentalRequest.getCarId());
+		checkIfCarExistsById(createRentalRequest.getCarId()); // aynı araba kiralanmış mı
+		checkDateToRentACar(pickupDate, returnDate);
+		checkFindexMinValue(car.getCarScore(), individualCustomer.getIdentityNumber()); // müşterinin findex puanına
+																						// bakıp arabanın puanı ile
+																						// karşılaştırdık
 
-		// checkFindexMinValue(car.getCarScore(), individualCustomerId.get); //findex
-		// puanı için
-
+		car.setCarState(3);
 		this.rentalRepository.save(rental);
 
 		return new SuccessResult("RENTAL.ADDED");
 
 	}
 
-	private void checkFindexMinValue(int carScore, String identityNumber) {
+	/*------------------------------- RENTAL ADD METHODS --------------------------------*/
+
+	private void checkIfCarState(int id) {                               // Araç bakımda veya Kiradaysa kiralanamaz
+		Car car = this.carRepository.findById(id);
+		if (car.getCarState() == 2 || car.getCarState() == 3) {
+			throw new BusinessException("CAR.IS.NOT.AVAIBLE");
+		}
+	}
+
+	private void checkDateToRentACar(LocalDate pickupDate, LocalDate returnDate) { // Tarihleri Yanlış Giremesin
+		if (!pickupDate.isBefore(returnDate) || pickupDate.isBefore(LocalDate.now())) {
+			throw new BusinessException("PICKUPDATE.AND.RETURNDATE.ERROR");
+		}
+	}
+
+	private void checkFindexMinValue(int carScore, String identityNumber) { // findex puanına göre araç verme
 
 		if (findexCheckService.CheckFindexScore(identityNumber) < carScore) {
 
@@ -103,38 +113,55 @@ public class RentalManager implements RentalService {
 
 	}
 
+	private void checkIfCarExistsById(int id) { // kiralamada aynı araba varsa hata döndür
+		Car currentCar = this.carRepository.findById(id);
+		if (currentCar != null) {
+			throw new BusinessException("CAR.EXISTS");
+		}
+	}
+
+	private double isDiffReturnCityFromPickUpCity(int pickUpCity, int returnCity) {
+		if (pickUpCity != returnCity) {
+			return 750.0;
+		}
+		return 0;
+	}
+
+	private double calculateTotalPrice(Rental rental, double dailyPrice) {
+		double days = rental.getTotalDate();
+		double totalDailyPrice = days * dailyPrice;
+		double diffCityPrice = isDiffReturnCityFromPickUpCity(rental.getReturnedCityId().getId(),
+				rental.getReturnedCityId().getId());
+		double totalPrice = totalDailyPrice + diffCityPrice;
+
+		return totalPrice;
+	}
+
+	/*----------------------------------------------UPDATE--------------------------------------------------------*/
 	@Override
 	public Result update(UpdateRentalRequest updateRentalRequest) {
+		checkIfCarState(updateRentalRequest.getCarId());
+		checkDateToRentACar(updateRentalRequest.getPickupDate(), updateRentalRequest.getReturnDate());
 
-		Rental rentalToUpdate = this.modelMapperService.forRequest().map(updateRentalRequest, Rental.class);
+		Rental rental = this.modelMapperService.forRequest().map(updateRentalRequest, Rental.class);
+
+		int diffDate = (int) ChronoUnit.DAYS.between(rental.getPickupDate(), rental.getReturnDate());
+		rental.setTotalDate(diffDate);
+
 		Car car = this.carRepository.findById(updateRentalRequest.getCarId());
+		double totalPrice = calculateTotalPrice(rental, car.getDailyPrice());
 
-		LocalDate pickupDate = (updateRentalRequest.getPickupDate());
-		LocalDate returnDate = (updateRentalRequest.getReturnDate());
-		LocalDate isToday = LocalDate.now();
-		int range = (int) ChronoUnit.DAYS.between(pickupDate, returnDate);
-		rentalToUpdate.setTotalDate(range);
-		rentalToUpdate.setTotalPrice(range * car.getDailyPrice());
-		// kendini yenileme
+		rental.setPickUpCityId(car.getCity());
+		rental.setTotalPrice(totalPrice);
 
-		if (isToday.equals(rentalToUpdate.getReturnDate())) {
-			car.setCarState(1);
-		}
-		if ((rentalToUpdate.getPickUpCityId().equals(rentalToUpdate.getReturnedCityId()))) {
-			rentalToUpdate.setTotalPrice(rentalToUpdate.getTotalPrice() - 750);
-		}
-
-		this.rentalRepository.save(rentalToUpdate);
-
-		return new SuccessResult("RENTAL.UPDATED");
+		rentalRepository.save(rental);
+		return new SuccessResult("RENTAL.ADDED");
 	}
 
 	@Override
 	public Result delete(DeleteRentalRequest deleteRentalRequest) {
-		Rental rental = new Rental();
-		rental.setId(deleteRentalRequest.getId());
+		Rental rental = this.modelMapperService.forRequest().map(deleteRentalRequest, Rental.class);
 		this.rentalRepository.delete(rental);
-
 		return new SuccessDataResult<Rental>("RENTAL.DELETED" + rental.getId());
 	}
 
@@ -146,8 +173,8 @@ public class RentalManager implements RentalService {
 				.map(rental -> this.modelMapperService.forResponse().map(rental, ListRentalResponse.class))
 				.collect(Collectors.toList());
 
-		return new SuccessDataResult<List<ListRentalResponse>>(response, "RENTALS.GETTED");
-		// new SuccessDataResult<List<Rental>>(rentalRepository.findAll());
+		return new SuccessDataResult<List<ListRentalResponse>>(response, "RENTALS.LISTED");
+
 	}
 
 	@Override
@@ -158,8 +185,6 @@ public class RentalManager implements RentalService {
 		RentalResponse response = this.modelMapperService.forResponse().map(rental, RentalResponse.class);
 
 		return new SuccessDataResult<RentalResponse>(response, "RENTAL.GETTED");
-		// new
-		// SuccessDataResult<Rental>(rentalRepository.findById(rentalResponse.getId()));
 	}
 
 }
