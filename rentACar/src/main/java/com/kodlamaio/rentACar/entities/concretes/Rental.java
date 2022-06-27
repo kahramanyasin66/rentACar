@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -45,6 +46,12 @@ public class Rental {
 	@JoinColumn(name = "car_id")
 	private Car car;
 	
+	@OneToMany(mappedBy = "rental")
+	List<OrderedAdditionalItem> orderedAdditionalItems;
+	
+	@OneToOne(mappedBy = "rental")
+	private Invoice invoice;
+	
 	@ManyToOne
 	@JoinColumn(name="customer_id")
 	Customer customer;	
@@ -57,8 +64,7 @@ public class Rental {
 	@JoinColumn (name="returned_city_id", referencedColumnName = "id")
 	City returnedCityId ;
 	
-	@OneToMany(mappedBy = "rental")
-	private List<OrderedAdditionalItems> orderedAdditionalItems;	
+
 	
 
 }

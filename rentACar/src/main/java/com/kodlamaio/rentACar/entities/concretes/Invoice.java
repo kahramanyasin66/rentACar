@@ -32,8 +32,8 @@ public class Invoice {
 	@Column(name = "state")
 	private int  state;
 	
-	@ManyToOne  //yok 
-	@JoinColumn(name = "rental_details_id")
-	private RentalDetail rentalDetail; 
+	@ManyToOne
+	@JoinColumn(name = "rental_id")
+	private Rental rental;
 
 }

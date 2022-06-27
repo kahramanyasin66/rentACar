@@ -1,4 +1,4 @@
-package com.kodlamaio.rentACar.business.responses.additionelServiceItems;
+package com.kodlamaio.rentACar.business.requests.additionalItems;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,9 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-
-public class ListAdditionalServiceItemResponse {
+public class UpdateAdditionalItemRequest {
+	private int id;
 	private String name;
-	private double additionalPrice;
-
+	private double dailyPrice;
 }

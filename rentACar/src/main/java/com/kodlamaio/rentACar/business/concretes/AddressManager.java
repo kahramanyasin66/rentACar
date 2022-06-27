@@ -41,7 +41,7 @@ public class AddressManager implements AddressService {
 	@Override
 	public Result delete(DeleteAddressRequest deleteAddressRequest) {
 		Address address = this.modelMapperService.forRequest().map(deleteAddressRequest, Address.class);
-		this.addressRepository.save(address);
+		this.addressRepository.delete(address);
 
 		return new SuccessResult("ADDRESS.DELETED");
 	}

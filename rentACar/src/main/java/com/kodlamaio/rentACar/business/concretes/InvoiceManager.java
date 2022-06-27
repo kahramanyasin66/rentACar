@@ -16,30 +16,26 @@ import com.kodlamaio.rentACar.core.utilities.results.Result;
 import com.kodlamaio.rentACar.core.utilities.results.SuccessDataResult;
 import com.kodlamaio.rentACar.core.utilities.results.SuccessResult;
 import com.kodlamaio.rentACar.dataAccess.abstracts.InvoiceRepository;
-import com.kodlamaio.rentACar.dataAccess.abstracts.RentalDetailRepository;
+import com.kodlamaio.rentACar.dataAccess.abstracts.RentalRepository;
 import com.kodlamaio.rentACar.entities.concretes.Invoice;
-import com.kodlamaio.rentACar.entities.concretes.RentalDetail;
 
 @Service
 public class InvoiceManager implements InvoiceService {
 	private InvoiceRepository invoiceRepository;
-	private RentalDetailRepository rentalDetailRepository ;
+	private RentalRepository rentalRepository ;
 	private ModelMapperService modelMapperService;
 
 	@Autowired
-	public InvoiceManager(InvoiceRepository invoiceRepository, ModelMapperService modelMapperService,RentalDetailRepository rentalDetailRepository ) {
+	public InvoiceManager(InvoiceRepository invoiceRepository, ModelMapperService modelMapperService, RentalRepository rentalRepository) {
 		
 		this.invoiceRepository = invoiceRepository;
 		this.modelMapperService = modelMapperService;
-		this.rentalDetailRepository = rentalDetailRepository ;
+		this.rentalRepository = rentalRepository ;
 		
 	}
 	@Override
 	public Result add(CreateInvoiceRequest createInvoiceRequest) {
-		Invoice invoice = this.modelMapperService.forRequest().map(createInvoiceRequest, Invoice.class);	
-		RentalDetail rentalDetailToAddTotalPrice =rentalDetailRepository.findById(createInvoiceRequest.getRentalDetailId());
-		invoice.setTotalPrice(rentalDetailToAddTotalPrice.getRental().getTotalPrice());
-		this.invoiceRepository.save(invoice);
+		
 		return new SuccessResult("INVOICE.ADDED");
 	}
 

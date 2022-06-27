@@ -18,19 +18,22 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "additional_items")
+@Table(name ="additional_items")
 public class AdditionalItem {
-	@Id
+	@Id 
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
-	private int id;
-
+	@Column(name="id")
+    private int id ;
+	
 	@Column(name = "name")
 	private String name;
 	
-	@Column(name="additional_price")
-	private double additionalPrice;
-
+	@Column(name = "daily_price")
+	private double dailyPrice;
+	
 	@OneToMany(mappedBy = "additionalItem")
-	private List<OrderedAdditionalItems> orderedAdditionalItems;
+	List<OrderedAdditionalItem> orderedAdditionalItems;
+	
+	
+	
 }
