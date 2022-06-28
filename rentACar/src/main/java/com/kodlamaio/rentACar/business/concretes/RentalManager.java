@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.kodlamaio.rentACar.business.abstracts.RentalService;
@@ -14,6 +16,7 @@ import com.kodlamaio.rentACar.business.requests.rentals.DeleteRentalRequest;
 import com.kodlamaio.rentACar.business.requests.rentals.UpdateRentalRequest;
 import com.kodlamaio.rentACar.business.responses.rentals.ListRentalResponse;
 import com.kodlamaio.rentACar.business.responses.rentals.RentalResponse;
+import com.kodlamaio.rentACar.business.responses.users.ListUserResponse;
 import com.kodlamaio.rentACar.core.utilities.adapters.abstracts.FindexCheckService;
 import com.kodlamaio.rentACar.core.utilities.exceptions.BusinessException;
 import com.kodlamaio.rentACar.core.utilities.mapping.ModelMapperService;
@@ -29,6 +32,7 @@ import com.kodlamaio.rentACar.entities.concretes.Car;
 import com.kodlamaio.rentACar.entities.concretes.City;
 import com.kodlamaio.rentACar.entities.concretes.IndividualCustomer;
 import com.kodlamaio.rentACar.entities.concretes.Rental;
+import com.kodlamaio.rentACar.entities.concretes.User;
 
 @Service
 public class RentalManager implements RentalService {
@@ -183,8 +187,20 @@ public class RentalManager implements RentalService {
 		Rental rental = this.rentalRepository.findById(id);
 
 		RentalResponse response = this.modelMapperService.forResponse().map(rental, RentalResponse.class);
-
 		return new SuccessDataResult<RentalResponse>(response, "RENTAL.GETTED");
+	}
+
+	@Override
+	public DataResult<List<ListRentalResponse>> getAll(Integer pageNo, Integer pageSize) {
+		Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
+		
+		List<Rental> rentals = this.rentalRepository.findAll(pageable).getContent();		
+		List<ListRentalResponse> response = rentals.stream()
+				.map(user -> this.modelMapperService.forResponse().map(user, ListRentalResponse.class))
+				.collect(Collectors.toList());
+		
+		
+		return new SuccessDataResult<List<ListRentalResponse>>(response+"RENTAL.PAGED");
 	}
 
 }

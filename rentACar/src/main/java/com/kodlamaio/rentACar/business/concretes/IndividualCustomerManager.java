@@ -37,7 +37,7 @@ public class IndividualCustomerManager implements IndividualCustomerService {
 		this.modelMapperService = modelMapperService;
 		this.personCheckService = personCheckService;
 	}
-
+ /*-------------------------------------------------------------------*/
 	@Override
 	public Result add(CreateIndividualCustomerRequest createIndividualCustomerRequest)
 			throws NumberFormatException, RemoteException {
@@ -49,6 +49,19 @@ public class IndividualCustomerManager implements IndividualCustomerService {
 
 		return new SuccessResult("INDIVIDUAL.CUSTOMER.ADDED");
 	}
+	
+	private void checkUserExistsByNationality(IndividualCustomer individualCustomer)
+			throws NumberFormatException, RemoteException {
+         //TC Kimlik Numarasının Doğruluğunu Kontrol Ediyoruz
+		if (!personCheckService.checkPerson(individualCustomer)) {
+
+			throw new BusinessException("USER.WASN'T.ADDED");
+		}
+	}
+	
+	
+	
+	/*-------------------------------------------------------------------------*/
 
 	@Override
 	public Result update(UpdateIndividualCustomerRequest updateIndividualCustomerRequest) {
@@ -75,10 +88,11 @@ public class IndividualCustomerManager implements IndividualCustomerService {
 		
 		List<ListIndividualCustomerResponse> response = individualCustomers.stream()				
 				.map(individualCustomer -> this.modelMapperService.forRequest()						
-						.map(individualCustomers,ListIndividualCustomerResponse.class))				
+						.map(individualCustomer, ListIndividualCustomerResponse.class))				
 						.collect(Collectors.toList());
+		
 
-		return new SuccessDataResult<List<ListIndividualCustomerResponse>>(response+"INDIVIDUAL.CUSTOMERS.LISTED");
+		return new SuccessDataResult<List<ListIndividualCustomerResponse>>(response,"INDIVIDUAL.CUSTOMERS.LISTED");
 	}
 
 	@Override
@@ -88,16 +102,9 @@ public class IndividualCustomerManager implements IndividualCustomerService {
 		IndividualCustomerResponse response = this.modelMapperService.forResponse()
 				.map(individualCustomer, IndividualCustomerResponse.class);				
 
-		return new SuccessDataResult<IndividualCustomerResponse>(response+"INDIVIDUAL.CUSTOMER.GETTED");
+		return new SuccessDataResult<IndividualCustomerResponse>(response,"INDIVIDUAL.CUSTOMER.GETTED");
 	}
 	
-	private void checkUserExistsByNationality(IndividualCustomer individualCustomer)
-			throws NumberFormatException, RemoteException {
-         //TC Kimlik Numarasının Doğruluğunu Kontrol Ediyoruz
-		if (!personCheckService.checkPerson(individualCustomer)) {
-
-			throw new BusinessException("USER.WASN'T.ADDED");
-		}
-	}
+	
 
 }

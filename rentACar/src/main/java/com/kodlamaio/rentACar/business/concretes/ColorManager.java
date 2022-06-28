@@ -43,14 +43,13 @@ public class ColorManager implements ColorService {
 
 	@Override
 	public Result delete(DeleteColorRequest deleteColorRequest) {
-		int colorId = deleteColorRequest.getId();
-		this.colorRepository.deleteById(colorId);
+		Color deleteToColor = this.modelMapperService.forRequest().map(deleteColorRequest, Color.class);
+		this.colorRepository.delete(deleteToColor);
 		return new SuccessResult("COLOR.DELETED");
 	}
 
 	@Override
 	public Result update(UpdateColorRequest updateColorRequest) {
-
 		/*
 		 * Color colorToUpdate = colorRepository.findById(updateColorRequest.getId());
 		 * updateColorRequest.setName(colorToUpdate.getName());
@@ -69,7 +68,8 @@ public class ColorManager implements ColorService {
 				.map(color -> this.modelMapperService.forResponse().map(color, ListColorResponse.class))
 				.collect(Collectors.toList());
 
-		return new SuccessDataResult<List<ListColorResponse>>(response, "COLORS.GETTED");
+		return new SuccessDataResult<List<ListColorResponse>>(response, "COLORS.LISTED");
+		
 		// new SuccessDataResult<List<ColorResponse>>(this.colorRepository.findAll());
 	}
 
@@ -78,8 +78,7 @@ public class ColorManager implements ColorService {
 		Color color = this.colorRepository.findById(id);
 		ColorResponse response = this.modelMapperService.forResponse().map(color, ColorResponse.class);
 
-		return new SuccessDataResult<ColorResponse>(response, "COLOR.GETTED");
-		// new
+		return new SuccessDataResult<ColorResponse>(response, "COLOR.GETTED");		
 		// SuccessDataResult<ColorResponse>(this.colorRepository.findById(colorResponse.getId()));
 	}
 

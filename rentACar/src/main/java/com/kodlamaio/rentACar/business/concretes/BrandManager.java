@@ -54,9 +54,10 @@ public class BrandManager implements BrandService {
 	@Override
 	public Result delete(DeleteBrandRequest deleteBrandRequest) {
 
-		int brandId = deleteBrandRequest.getId();
-		this.brandRepository.deleteById(brandId);
+		Brand deleteToBrand = this.modelMapperService.forRequest().map(deleteBrandRequest, Brand.class);
+		this.brandRepository.delete(deleteToBrand);
 		return new SuccessResult("BRAND.DELETED");
+				
 
 	}
 

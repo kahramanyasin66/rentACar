@@ -48,8 +48,8 @@ public class CityManager implements CityService {
 
 	@Override
 	public Result delete(DeleteCityRequest deleteCityRequest) {
-		int cityId = deleteCityRequest.getId();
-		this.cityRepository.deleteById(cityId);
+		City deleteToCity = this.modelMapperService.forRequest().map(deleteCityRequest, City.class);
+		this.cityRepository.delete(deleteToCity);
 		return new SuccessResult("CITY.DELETED");
 	}
 
@@ -59,7 +59,7 @@ public class CityManager implements CityService {
 		List<ListCityResponse> response = cities.stream()
 				.map(city -> this.modelMapperService.forResponse().map(city, ListCityResponse.class))
 				.collect(Collectors.toList());
-		return new SuccessDataResult<List<ListCityResponse>>(response, "CITIES:GETTED");
+		return new SuccessDataResult<List<ListCityResponse>>(response, "CITIES.LISTED");
 	}
 
 	@Override

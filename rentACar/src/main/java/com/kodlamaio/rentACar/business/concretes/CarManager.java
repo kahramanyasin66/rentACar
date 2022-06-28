@@ -41,28 +41,23 @@ public class CarManager implements CarService {
 
 		Car car = this.modelMapperService.forRequest().map(createCarRequest, Car.class);
 		car.setCarState(1);
-
 		this.carRepository.save(car);
-
 		return new SuccessResult("CAR.ADDED");
 
 	}
 
 	@Override
 	public Result delete(DeleteCarRequest deleteCarRequest) {
-		int carId = deleteCarRequest.getId();
-		this.carRepository.deleteById(carId);
+		Car deleteToCar = this.modelMapperService.forRequest().map(deleteCarRequest, Car.class);
+		this.carRepository.delete(deleteToCar);
 		return new SuccessResult("CAR.DELETED");
-
 	}
 
 	@Override
 	public Result update(UpdateCarRequest updateCarRequest) {
 
 		Car carToUpdate = modelMapperService.forRequest().map(updateCarRequest, Car.class);
-
 		this.carRepository.save(carToUpdate);
-
 		return new SuccessResult("CAR.UPDATED");
 
 	}
@@ -74,7 +69,7 @@ public class CarManager implements CarService {
 				.map(car -> this.modelMapperService.forResponse().map(car, ListCarResponse.class))
 				.collect(Collectors.toList());
 
-		return new SuccessDataResult<List<ListCarResponse>>(response, "CARS.GETTED");
+		return new SuccessDataResult<List<ListCarResponse>>(response, "CARS.LISTED");
 
 	}
 

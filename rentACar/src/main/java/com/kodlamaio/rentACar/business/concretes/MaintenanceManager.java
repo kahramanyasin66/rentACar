@@ -53,8 +53,8 @@ public class MaintenanceManager implements MaintenanceService {
 	@Override
 	public Result delete(DeleteMaintenanceRequest deleteMaintenanceRequest) {
 
-		int carId = deleteMaintenanceRequest.getId();
-		this.maintenanceRepository.deleteById(carId);
+		Maintenance deleteToMaintenance = this.modelMapperService.forRequest().map(deleteMaintenanceRequest, Maintenance.class);
+		this.maintenanceRepository.delete(deleteToMaintenance);
 		return new SuccessResult("MAINTENANCE.DELETED");
 
 	}
@@ -67,7 +67,7 @@ public class MaintenanceManager implements MaintenanceService {
 		Car car = this.carRepository.findById(updateMaintenanceRequest.getCarId());
 		LocalDate itsToday = LocalDate.now();
 		if (itsToday.equals(updateMaintenanceRequest.getDateReturned())) {
-			car.setCarState(1);
+			car.setCarState(2);
 		}
 		this.maintenanceRepository.save(maintenanceToUpdate);
 
@@ -80,7 +80,7 @@ public class MaintenanceManager implements MaintenanceService {
 		List<ListMaintenanceResponse> response = maintenances.stream().map(
 				maintenance -> this.modelMapperService.forResponse().map(maintenances, ListMaintenanceResponse.class))
 				.collect(Collectors.toList());
-
+		
 		return new SuccessDataResult<List<ListMaintenanceResponse>>(response, "MAINTENANCES.GETTED");
 
 	}

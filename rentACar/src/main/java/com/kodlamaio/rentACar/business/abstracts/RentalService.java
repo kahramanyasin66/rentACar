@@ -7,6 +7,7 @@ import com.kodlamaio.rentACar.business.requests.rentals.DeleteRentalRequest;
 import com.kodlamaio.rentACar.business.requests.rentals.UpdateRentalRequest;
 import com.kodlamaio.rentACar.business.responses.rentals.ListRentalResponse;
 import com.kodlamaio.rentACar.business.responses.rentals.RentalResponse;
+import com.kodlamaio.rentACar.business.responses.users.ListUserResponse;
 import com.kodlamaio.rentACar.core.utilities.results.DataResult;
 import com.kodlamaio.rentACar.core.utilities.results.Result;
 
@@ -20,5 +21,7 @@ public interface RentalService {
 	DataResult<List<ListRentalResponse>> getall();
 
 	DataResult<RentalResponse> getById(int id);
+	
+	DataResult<List<ListRentalResponse>> getAll(Integer pageNo , Integer pageSize);
 
 }

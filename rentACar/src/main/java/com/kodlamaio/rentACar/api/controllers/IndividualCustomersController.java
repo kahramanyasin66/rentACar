@@ -22,7 +22,7 @@ import com.kodlamaio.rentACar.core.utilities.results.DataResult;
 import com.kodlamaio.rentACar.core.utilities.results.Result;
 
 @RestController
-@RequestMapping("api/individual_customers")
+@RequestMapping("api/individualcustomers")
 public class IndividualCustomersController {
 	private IndividualCustomerService individualCustomerService;
 

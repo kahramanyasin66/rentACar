@@ -10,9 +10,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ListIndividualCustomerResponse {
+	private String customerNumber;
 	private String firstName;
 	private String lastName;
 	private String identityNumber;
 	private LocalDate birthDate;
-
+	private String email;
+	private String password;
 }

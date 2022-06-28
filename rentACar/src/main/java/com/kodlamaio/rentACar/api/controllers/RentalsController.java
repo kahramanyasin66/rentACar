@@ -17,6 +17,7 @@ import com.kodlamaio.rentACar.business.requests.rentals.DeleteRentalRequest;
 import com.kodlamaio.rentACar.business.requests.rentals.UpdateRentalRequest;
 import com.kodlamaio.rentACar.business.responses.rentals.ListRentalResponse;
 import com.kodlamaio.rentACar.business.responses.rentals.RentalResponse;
+import com.kodlamaio.rentACar.business.responses.users.ListUserResponse;
 import com.kodlamaio.rentACar.core.utilities.results.DataResult;
 import com.kodlamaio.rentACar.core.utilities.results.Result;
 
@@ -55,6 +56,10 @@ public class RentalsController {
 	@GetMapping("/getbyid")
 	public DataResult<RentalResponse> getById(@RequestParam int id) {
 		return this.rentalService.getById(id);
+	}
+	@GetMapping("/getallbypage")
+	public DataResult<List<ListRentalResponse>> getAllByPage(@RequestParam int pageSize, int pageNo) {
+		return this.rentalService.getAll(pageSize, pageNo);
 	}
 
 }

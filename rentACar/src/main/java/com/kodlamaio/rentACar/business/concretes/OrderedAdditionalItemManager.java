@@ -102,8 +102,7 @@ public class OrderedAdditionalItemManager implements OrderedAdditionalItemServic
 				.map(orderedAdditionalItem -> this.modelMapperService.forResponse().map(orderedAdditionalItems,
 						ListOrderedAdditionalItemResponse.class))
 				.collect(Collectors.toList());
-		return new SuccessDataResult<List<ListOrderedAdditionalItemResponse>>(
-				response + "ORDERED.ADDITONAL.ITEMS.LISTED");
+		return new SuccessDataResult<List<ListOrderedAdditionalItemResponse>>(response,"ORDERED.ADDITONAL.ITEMS.LISTED");
 
 	}
 
@@ -113,7 +112,7 @@ public class OrderedAdditionalItemManager implements OrderedAdditionalItemServic
 		OrderedAdditionalItemResponse  response = this.modelMapperService.forResponse()
 				.map(orderedAdditionalItem, OrderedAdditionalItemResponse.class);
 
-		return new SuccessDataResult<OrderedAdditionalItemResponse>(response+"ORDERED.ADDITONAL.ITEM.GETTED");
+		return new SuccessDataResult<OrderedAdditionalItemResponse>(response,"ORDERED.ADDITONAL.ITEM.GETTED");
 	}
 
 	private double calculateTotalPrice(OrderedAdditionalItem orderedAdditionalItem, double price) {

@@ -54,9 +54,8 @@ public class UserManager implements UserService {
 
 	@Override
 	public Result delete(DeleteUserRequest deleteUserRequest) {
-		int userId = deleteUserRequest.getId();
-		this.userRepository.deleteById(userId);
-
+		User deleteToUser = this.modelMapperService.forRequest().map(deleteUserRequest, User.class);
+		this.userRepository.delete(deleteToUser);
 		return new SuccessResult("USER.DELETED");
 	}
 
@@ -67,14 +66,14 @@ public class UserManager implements UserService {
 				.map(user -> this.modelMapperService.forResponse().map(user, ListUserResponse.class))
 				.collect(Collectors.toList());
 
-		return new SuccessDataResult<List<ListUserResponse>>(response, "USERS.GETTED");
+		return new SuccessDataResult<List<ListUserResponse>>(response, "USERS.LISTED");
 	}
 
 	@Override
 	public DataResult<UserResponse> getById(int id) {
 		User userId = this.userRepository.findById(id);
 		UserResponse response = this.modelMapperService.forResponse().map(userId, UserResponse.class);
-		return new SuccessDataResult<UserResponse>(response, "USER:GETTED");
+		return new SuccessDataResult<UserResponse>(response, "USER.GETTED");
 	}
 
 	@Override

@@ -21,7 +21,7 @@ import com.kodlamaio.rentACar.core.utilities.results.DataResult;
 import com.kodlamaio.rentACar.core.utilities.results.Result;
 
 @RestController
-@RequestMapping("api/corporate_customers")
+@RequestMapping("api/corporatecustomers")
 public class CorporateCustomersController {
 	private CorporateCustomerService corporateCustomerService;
 

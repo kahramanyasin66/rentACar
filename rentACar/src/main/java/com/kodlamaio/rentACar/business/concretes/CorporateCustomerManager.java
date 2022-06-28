@@ -68,11 +68,10 @@ public class CorporateCustomerManager implements CorporateCustomerService {
 		
 		List<ListCorporeteCustomerResponse> response = corporateCustomers.stream()				
 				.map(corporateCustomer -> this.modelMapperService.forResponse()
-						.map(corporateCustomers,ListCorporeteCustomerResponse.class))
-						.collect(Collectors.toList());
+						.map(corporateCustomer,ListCorporeteCustomerResponse.class))
+						.collect(Collectors.toList());						
 						
-						
-		return new SuccessDataResult<List<ListCorporeteCustomerResponse>>(response +"CORPORATE.CUSTOMERS.LISTED");
+		return new SuccessDataResult<List<ListCorporeteCustomerResponse>>(response ,"CORPORATE.CUSTOMERS.LISTED");
 	}
 
 	@Override
@@ -81,7 +80,7 @@ public class CorporateCustomerManager implements CorporateCustomerService {
 		CorporateCustomerResponse response = this.modelMapperService.forResponse().map(corporateCustomerId,
 				CorporateCustomerResponse.class);
 
-		return new SuccessDataResult<CorporateCustomerResponse>(response + "CORPORATE.CUSTOMER.GETTED");
+		return new SuccessDataResult<CorporateCustomerResponse>(response , "CORPORATE.CUSTOMER.GETTED");
 	}
 
 }
