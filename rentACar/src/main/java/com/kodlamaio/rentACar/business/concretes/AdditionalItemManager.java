@@ -12,6 +12,7 @@ import com.kodlamaio.rentACar.business.requests.additionalItems.DeleteAdditional
 import com.kodlamaio.rentACar.business.requests.additionalItems.UpdateAdditionalItemRequest;
 import com.kodlamaio.rentACar.business.responses.additionalItems.AdditionalItemResponse;
 import com.kodlamaio.rentACar.business.responses.additionalItems.ListAdditionalItemResponse;
+import com.kodlamaio.rentACar.core.utilities.exceptions.BusinessException;
 import com.kodlamaio.rentACar.core.utilities.mapping.ModelMapperService;
 import com.kodlamaio.rentACar.core.utilities.results.DataResult;
 import com.kodlamaio.rentACar.core.utilities.results.Result;
@@ -36,6 +37,7 @@ public class AdditionalItemManager implements AdditionalItemService{
 	@Override
 	public Result add(CreateAdditionalItemRequest createAdditionalItemRequest) {
 		AdditionalItem additionalItem = this.modelMapperService.forRequest().map(createAdditionalItemRequest, AdditionalItem.class);
+		checkIfItemExistsByName(createAdditionalItemRequest.getName());
 		this.additionalItemRepository.save(additionalItem);		
 		
 		return new SuccessResult("ADDITONAL.ITEM.ADDED");
@@ -44,6 +46,7 @@ public class AdditionalItemManager implements AdditionalItemService{
 	@Override
 	public Result update(UpdateAdditionalItemRequest updateAdditionalItemRequest) {
 		AdditionalItem updateToAdditionalItem = this.modelMapperService.forRequest().map(updateAdditionalItemRequest, AdditionalItem.class);
+		checkIfItemExistsByName(updateAdditionalItemRequest.getName());
 		this.additionalItemRepository.save(updateToAdditionalItem);
 		
 		return new SuccessResult("ADDITONAL.ITEM.UPDATED");
@@ -76,6 +79,12 @@ public class AdditionalItemManager implements AdditionalItemService{
 				.map(additionalItemId,AdditionalItemResponse.class);
 		
 		return new SuccessDataResult<AdditionalItemResponse>(response,"ADDITIONAL.ITEM.GETTED");
+	}
+	private void checkIfItemExistsByName(String name) {
+		AdditionalItem additionalItem = this.additionalItemRepository.findByName(name);
+		if (additionalItem != null) {
+			throw new BusinessException("ITEM.EXISTS");
+		}
 	}
 
 }

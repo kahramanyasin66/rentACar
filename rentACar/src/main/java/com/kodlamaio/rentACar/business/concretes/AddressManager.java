@@ -58,8 +58,30 @@ public class AddressManager implements AddressService {
 
 	@Override
 	public DataResult<AddressResponse> getById(int id) {
+		Address address = this.addressRepository.findById(id);
+		
+		AddressResponse response = this.modelMapperService.forResponse().map(address, AddressResponse.class);
 
-		return null;
+		return new SuccessDataResult<AddressResponse>(response,"ADDRESS.GETTED");
+	}
+	
+	
+	@Override
+	public DataResult<List<ListAddressResponse>> getAllInvoiceAddress(int userId, int addressType) {
+		List<Address> addresses = this.addressRepository.getByCustomerIdAndAddressType(userId, addressType);
+		List<ListAddressResponse> response = addresses.stream()
+				.map(address -> this.modelMapperService.forResponse().map(address, ListAddressResponse.class))
+				.collect(Collectors.toList());
+		return new SuccessDataResult<List<ListAddressResponse>>(response, "INVOICE.ADDRESSES.LISTED");
+	}
+
+	@Override
+	public DataResult<List<ListAddressResponse>> getAllRealAddress(int userId, int addressType) {
+		List<Address> addresses = this.addressRepository.getByCustomerIdAndAddressType(userId, addressType);
+		List<ListAddressResponse> response = addresses.stream()
+				.map(address -> this.modelMapperService.forResponse().map(address, ListAddressResponse.class))
+				.collect(Collectors.toList());
+		return new SuccessDataResult<List<ListAddressResponse>>(response, "REAL.ADDRESSES.LISTED");
 	}
 
 }

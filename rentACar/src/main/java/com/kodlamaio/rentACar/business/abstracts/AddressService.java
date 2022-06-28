@@ -20,5 +20,9 @@ public interface AddressService {
 	DataResult<List<ListAddressResponse>> getAll();
 
 	DataResult<AddressResponse> getById(int id);
+	
+	DataResult<List<ListAddressResponse>> getAllInvoiceAddress(int userId, int addressType);
+	
+	DataResult<List<ListAddressResponse>> getAllRealAddress(int userId, int addressType);
 
 }
