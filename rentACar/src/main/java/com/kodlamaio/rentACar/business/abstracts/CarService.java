@@ -13,7 +13,7 @@ import com.kodlamaio.rentACar.entities.concretes.Car;
 
 public interface CarService {
 	Result add(CreateCarRequest createCarRequest);
-//sds
+//sdsaf
 	Result delete(DeleteCarRequest deleteCarRequest);
 
 	Result update(UpdateCarRequest updateCarRequest);
