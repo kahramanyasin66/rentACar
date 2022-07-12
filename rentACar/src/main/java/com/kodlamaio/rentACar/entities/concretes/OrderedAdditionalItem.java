@@ -44,7 +44,6 @@ public class OrderedAdditionalItem {
 	private LocalDate pickUpDate;
 
 	@Column(name = "return_date")
-	private LocalDate returnDate;
+	private LocalDate returnDate;	
 	
-
 }

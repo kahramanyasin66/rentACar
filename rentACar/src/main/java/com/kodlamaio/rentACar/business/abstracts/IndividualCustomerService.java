@@ -10,6 +10,7 @@ import com.kodlamaio.rentACar.business.responses.individualCustomers.IndividualC
 import com.kodlamaio.rentACar.business.responses.individualCustomers.ListIndividualCustomerResponse;
 import com.kodlamaio.rentACar.core.utilities.results.DataResult;
 import com.kodlamaio.rentACar.core.utilities.results.Result;
+import com.kodlamaio.rentACar.entities.concretes.IndividualCustomer;
 
 public interface IndividualCustomerService {
 	Result add(CreateIndividualCustomerRequest createIndividualCustomerRequest) throws NumberFormatException, RemoteException;
@@ -21,5 +22,6 @@ public interface IndividualCustomerService {
 	DataResult<List<ListIndividualCustomerResponse>> getAll();
 
 	DataResult<IndividualCustomerResponse> getById(int id);
-
+    
+	IndividualCustomer findByIndividualCustomerId(int id);
 }

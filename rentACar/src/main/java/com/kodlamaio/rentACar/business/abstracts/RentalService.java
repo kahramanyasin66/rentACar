@@ -10,18 +10,25 @@ import com.kodlamaio.rentACar.business.responses.rentals.RentalResponse;
 import com.kodlamaio.rentACar.business.responses.users.ListUserResponse;
 import com.kodlamaio.rentACar.core.utilities.results.DataResult;
 import com.kodlamaio.rentACar.core.utilities.results.Result;
+import com.kodlamaio.rentACar.entities.concretes.Rental;
 
 public interface RentalService {
-	Result add(CreateRentalRequest createRentalRequest);
+	Result addIndividualCustomer(CreateRentalRequest createRentalRequest);
 
-	Result update(UpdateRentalRequest updateRentalRequest);
+	Result addCorporateCustomer(CreateRentalRequest createRentalRequest);
 
+	Result updateIndividualCustomer(UpdateRentalRequest updateRentalRequest);
+
+	Result updateCorporateCustomer(UpdateRentalRequest updateRentalRequest);
+	
 	Result delete(DeleteRentalRequest deleteRentalRequest);
+	
+	
 
 	DataResult<List<ListRentalResponse>> getall();
+	DataResult<List<ListRentalResponse>> getAll(Integer pageNo, Integer pageSize);
+	DataResult<RentalResponse> getById(int id);	
 
-	DataResult<RentalResponse> getById(int id);
-	
-	DataResult<List<ListRentalResponse>> getAll(Integer pageNo , Integer pageSize);
+	Rental findByRentalId(int id);
 
 }

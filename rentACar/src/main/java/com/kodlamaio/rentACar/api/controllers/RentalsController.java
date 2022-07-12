@@ -30,17 +30,27 @@ public class RentalsController {
 		this.rentalService = rentalService;
 	}
 
-	@PostMapping("/add")
-	public Result add(@RequestBody @Valid CreateRentalRequest createRentalRequest) {
-		return this.rentalService.add(createRentalRequest);
+	@PostMapping("/addindividualcustomer")
+	public Result addIndividualCustomer(@RequestBody @Valid CreateRentalRequest createRentalRequest) {
+		return this.rentalService.addIndividualCustomer(createRentalRequest);
+
+	}
+	@PostMapping("/addcorporatecustomer")
+	public Result addCorporateCustomer(@RequestBody @Valid CreateRentalRequest createRentalRequest) {
+		return this.rentalService.addCorporateCustomer(createRentalRequest);
 
 	}
 
-	@PostMapping("/update")
-	public Result update(@RequestBody @Valid UpdateRentalRequest updateRentalRequest) {
-		return this.rentalService.update(updateRentalRequest);
+	@PostMapping("/updatecorporatecustomer")
+	public Result updateCorporateCustomer(@RequestBody @Valid UpdateRentalRequest updateRentalRequest) {
+		return this.rentalService.updateCorporateCustomer(updateRentalRequest);
 	}
 
+	@PostMapping("/updateindividualcustomer")
+	public Result updateIndividualCustomer(@RequestBody @Valid UpdateRentalRequest updateRentalRequest) {
+		return this.rentalService.updateIndividualCustomer(updateRentalRequest);
+	}	
+	
 	@PostMapping("/delete")
 	public Result delete(@RequestBody DeleteRentalRequest deleteRentalRequest) {
 		return this.rentalService.delete(deleteRentalRequest);

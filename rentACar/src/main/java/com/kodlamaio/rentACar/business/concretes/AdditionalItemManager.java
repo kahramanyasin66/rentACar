@@ -36,8 +36,9 @@ public class AdditionalItemManager implements AdditionalItemService{
 
 	@Override
 	public Result add(CreateAdditionalItemRequest createAdditionalItemRequest) {
+		checkIfAdditionalItemExistsByName(createAdditionalItemRequest.getName());	
 		AdditionalItem additionalItem = this.modelMapperService.forRequest().map(createAdditionalItemRequest, AdditionalItem.class);
-		checkIfItemExistsByName(createAdditionalItemRequest.getName());
+		checkIfAdditionalItemExistsByName(createAdditionalItemRequest.getName());
 		this.additionalItemRepository.save(additionalItem);		
 		
 		return new SuccessResult("ADDITONAL.ITEM.ADDED");
@@ -45,8 +46,9 @@ public class AdditionalItemManager implements AdditionalItemService{
 
 	@Override
 	public Result update(UpdateAdditionalItemRequest updateAdditionalItemRequest) {
+		checkIfAdditionalItemExistsById(updateAdditionalItemRequest.getId());
 		AdditionalItem updateToAdditionalItem = this.modelMapperService.forRequest().map(updateAdditionalItemRequest, AdditionalItem.class);
-		checkIfItemExistsByName(updateAdditionalItemRequest.getName());
+		checkIfAdditionalItemExistsByName(updateAdditionalItemRequest.getName());
 		this.additionalItemRepository.save(updateToAdditionalItem);
 		
 		return new SuccessResult("ADDITONAL.ITEM.UPDATED");
@@ -54,6 +56,7 @@ public class AdditionalItemManager implements AdditionalItemService{
 
 	@Override
 	public Result delete(DeleteAdditionalItemRequest deleteAdditionalItemRequest) {
+		checkIfAdditionalItemExistsById(deleteAdditionalItemRequest.getId());
 		AdditionalItem deleteToAdditionalItem = this.modelMapperService.forRequest().map(deleteAdditionalItemRequest, AdditionalItem.class);
 		this.additionalItemRepository.delete(deleteToAdditionalItem);
 		
@@ -80,11 +83,32 @@ public class AdditionalItemManager implements AdditionalItemService{
 		
 		return new SuccessDataResult<AdditionalItemResponse>(response,"ADDITIONAL.ITEM.GETTED");
 	}
-	private void checkIfItemExistsByName(String name) {
+	
+	
+	
+	
+	
+	
+	
+	
+	private void checkIfAdditionalItemExistsByName(String name) {
 		AdditionalItem additionalItem = this.additionalItemRepository.findByName(name);
 		if (additionalItem != null) {
-			throw new BusinessException("ITEM.EXISTS");
+			throw new BusinessException("THERE.IS.NOT.ADDITIONAL.ITEM.NAME");
 		}
+	}
+	private void checkIfAdditionalItemExistsById(int id) {
+		AdditionalItem additionaltem = this.additionalItemRepository.findById(id);
+		if(additionaltem == null) {
+			throw new BusinessException("THERE.IS.NOT.ADDITIONAL.ITEM");
+		}
+	}
+
+	@Override
+	public AdditionalItem findByAdditionalItemId(int additionalItemId) {
+		checkIfAdditionalItemExistsById(additionalItemId);
+		AdditionalItem additionalItem = this.additionalItemRepository.findById(additionalItemId);
+		return additionalItem;
 	}
 
 }

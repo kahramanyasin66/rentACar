@@ -9,6 +9,7 @@ import com.kodlamaio.rentACar.business.responses.corporateCustomers.CorporateCus
 import com.kodlamaio.rentACar.business.responses.corporateCustomers.ListCorporeteCustomerResponse;
 import com.kodlamaio.rentACar.core.utilities.results.DataResult;
 import com.kodlamaio.rentACar.core.utilities.results.Result;
+import com.kodlamaio.rentACar.entities.concretes.CorporateCustomer;
 
 public interface CorporateCustomerService {
 	Result add(CreateCorporateCustomerRequest corporateCustomerRequest);
@@ -20,5 +21,7 @@ public interface CorporateCustomerService {
 	DataResult<List<ListCorporeteCustomerResponse>> getAll();
 
 	DataResult<CorporateCustomerResponse> getById(int id);
+	
+	CorporateCustomer findByCorporateCustomerId(int id);
 
 }

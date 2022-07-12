@@ -23,6 +23,6 @@ public class CreateCarRequest {
 	private String plate;
 	private int brandId;
 	private int colorId;
-	private int cityId;
+//	private int cityId;
 	private int carScore;
 }

@@ -30,15 +30,53 @@ public class AddressesController {
 		this.addressService = addressService;
 	}
 
-	@PostMapping("/add")
-	Result add(@RequestBody @Valid CreateAddressRequest createAddressRequest) {
-		return this.addressService.add(createAddressRequest);
+	/*------------------------- ADD --------------------------------*/
+
+	@PostMapping("/addforcorporatecustomer")
+	Result addForCorporateCustomer(@RequestBody @Valid CreateAddressRequest createAddressRequest) {
+		return this.addressService.addForCorporateCustomer(createAddressRequest);
 	}
 
-	@PostMapping("/update")
-	Result update(@RequestBody @Valid UpdateAddressRequest updateAddressRequest) {
-		return this.addressService.update(updateAddressRequest);
+	@PostMapping("/addforindividualcustomer")
+	Result addForIndividualCustomer(@RequestBody @Valid CreateAddressRequest createAddressRequest) {
+		return this.addressService.addForIndividualCustomer(createAddressRequest);
 	}
+
+	@PostMapping("/addinvoiceaddressifdifferentforindividualcustomer")
+	Result addInvoiceAddressIfDifferentForIndividualCustomer(
+			@RequestBody @Valid CreateAddressRequest createAddressRequest) {
+		return this.addressService.addInvoiceAddressIfDifferentForIndividualCustomer(createAddressRequest);
+	}
+
+	@PostMapping("/addinvoiceaddressifdifferentforcorporatecustomer")
+	Result addInvoiceAddressIfDifferentForCorporateCustomer(
+			@RequestBody @Valid CreateAddressRequest createAddressRequest) {
+		return this.addressService.addInvoiceAddressIfDifferentForCorporateCustomer(createAddressRequest);
+	}
+
+	/*------------------------- UPDATE --------------------------------*/
+	@PostMapping("/updateforindividualcustomer")
+	Result updateForIndividualCustomer(@RequestBody @Valid UpdateAddressRequest updateAddressRequest) {
+		return this.addressService.updateForIndividualCustomer(updateAddressRequest);
+	}
+
+	@PostMapping("/updateforcorporatecustomer")
+	Result updateForCorporateCustomer(@RequestBody @Valid UpdateAddressRequest updateAddressRequest) {
+		return this.addressService.updateForCorporateCustomer(updateAddressRequest);
+	}
+
+	@PostMapping("/updateifbotharesameforindividualcustomer")
+	Result updateIfBothAreSameForIndividualCustomer(@RequestBody @Valid UpdateAddressRequest updateAddressRequest) {
+		return this.addressService.updateIfBothAreSameForIndividualCustomer(updateAddressRequest);
+	}
+
+	@PostMapping("/updateifbotharesameforcorporatecustomer")
+	Result updateIfBothAreSameForCorporateCustomer(@RequestBody @Valid UpdateAddressRequest updateAddressRequest) {
+		return this.addressService.updateIfBothAreSameForCorporateCustomer(updateAddressRequest);
+
+	}
+
+	/*------------------------- OTHERS --------------------------------*/
 
 	@PostMapping("/delete")
 	Result delete(@RequestBody @Valid DeleteAddressRequest deleteAddressRequest) {
@@ -53,16 +91,6 @@ public class AddressesController {
 	@GetMapping("/getbyid")
 	DataResult<AddressResponse> getById(@RequestParam int id) {
 		return this.addressService.getById(id);
-	}
-
-	@GetMapping("/getallinvoiceaddress")
-	DataResult<List<ListAddressResponse>> getAllInvoiceAddress(@RequestParam int userId, int addressType) {
-		return this.addressService.getAllInvoiceAddress(userId, addressType);
-	}
-
-	@GetMapping("/getallrealaddress")
-	DataResult<List<ListAddressResponse>> getAllRealAddress(@RequestParam int userId, int addressType) {
-		return this.addressService.getAllRealAddress(userId, addressType);
 	}
 
 }

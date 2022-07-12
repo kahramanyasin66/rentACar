@@ -12,12 +12,16 @@ import com.kodlamaio.rentACar.core.utilities.results.DataResult;
 import com.kodlamaio.rentACar.core.utilities.results.Result;
 
 public interface UserService {
-	Result add (CreateUserRequest createUserRequest) throws NumberFormatException, RemoteException;
-	Result update (UpdateUserRequest updateUserRequest);
+	Result add(CreateUserRequest createUserRequest) throws NumberFormatException, RemoteException;
+
+	Result update(UpdateUserRequest updateUserRequest);
+
 	Result delete(DeleteUserRequest deleteUserRequest);
+
 	DataResult<List<ListUserResponse>> getAll();
+
 	DataResult<UserResponse> getById(int id);
-	DataResult<List<ListUserResponse>> getAll(Integer pageNo , Integer pageSize);
-	
+
+	DataResult<List<ListUserResponse>> getAll(Integer pageNo, Integer pageSize);
 
 }

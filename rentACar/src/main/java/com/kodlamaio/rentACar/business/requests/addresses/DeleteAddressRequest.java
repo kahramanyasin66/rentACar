@@ -7,6 +7,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DeleteAddressRequest {
-	private int id ;
-	
+	private int id ;	
 }

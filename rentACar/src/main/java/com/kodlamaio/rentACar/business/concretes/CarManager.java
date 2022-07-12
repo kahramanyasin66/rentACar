@@ -19,7 +19,9 @@ import com.kodlamaio.rentACar.core.utilities.results.Result;
 import com.kodlamaio.rentACar.core.utilities.results.SuccessDataResult;
 import com.kodlamaio.rentACar.core.utilities.results.SuccessResult;
 import com.kodlamaio.rentACar.dataAccess.abstracts.CarRepository;
+import com.kodlamaio.rentACar.entities.concretes.Brand;
 import com.kodlamaio.rentACar.entities.concretes.Car;
+import com.kodlamaio.rentACar.entities.concretes.Color;
 
 @Service
 public class CarManager implements CarService {
@@ -38,8 +40,13 @@ public class CarManager implements CarService {
 	public Result add(CreateCarRequest createCarRequest) {
 
 		checkBrandCount(createCarRequest.getBrandId());
+		checkIfCarExistsByPlate(createCarRequest.getPlate());
+		// Marka brandManager'da check ediliyor.
+		// Renk colorManager'da check ediliyor.
 
-		Car car = this.modelMapperService.forRequest().map(createCarRequest, Car.class);
+		// Car car = this.modelMapperService.forRequest().map(createCarRequest,
+		// Car.class);
+		Car car = carMappingBuilder(createCarRequest);
 		car.setCarState(1);
 		this.carRepository.save(car);
 		return new SuccessResult("CAR.ADDED");
@@ -48,6 +55,7 @@ public class CarManager implements CarService {
 
 	@Override
 	public Result delete(DeleteCarRequest deleteCarRequest) {
+		checkIfCarExistsById(deleteCarRequest.getId());
 		Car deleteToCar = this.modelMapperService.forRequest().map(deleteCarRequest, Car.class);
 		this.carRepository.delete(deleteToCar);
 		return new SuccessResult("CAR.DELETED");
@@ -55,7 +63,7 @@ public class CarManager implements CarService {
 
 	@Override
 	public Result update(UpdateCarRequest updateCarRequest) {
-
+		checkIfCarExistsById(updateCarRequest.getId());
 		Car carToUpdate = modelMapperService.forRequest().map(updateCarRequest, Car.class);
 		this.carRepository.save(carToUpdate);
 		return new SuccessResult("CAR.UPDATED");
@@ -75,17 +83,56 @@ public class CarManager implements CarService {
 
 	@Override
 	public DataResult<CarResponse> getById(int id) {
+		checkIfCarExistsById(id);
 		Car car = carRepository.findById(id);
 		CarResponse response = this.modelMapperService.forResponse().map(car, CarResponse.class);
 		return new SuccessDataResult<CarResponse>(response, "CAR.GETTED");
 
 	}
 
+	private Car carMappingBuilder(CreateCarRequest createCarRequest) {
+		return Car.builder().dailyPrice(createCarRequest.getDailyPrice()).kilometer(createCarRequest.getKilometer())
+				.plate(createCarRequest.getPlate()).carScore(createCarRequest.getCarScore())
+				.brand(brandMappingBuilder(createCarRequest)).color(colorMappingBuilder(createCarRequest))
+
+				.build();
+	}
+
+	private Brand brandMappingBuilder(CreateCarRequest createCarRequest) {
+		return Brand.builder().id(createCarRequest.getBrandId()).build();
+
+	}
+
+	private Color colorMappingBuilder(CreateCarRequest createCarRequest) {
+		return Color.builder().id(createCarRequest.getColorId()).build();
+	}
+
 	private void checkBrandCount(int id) {
 		List<Car> cars = carRepository.getByBrandId(id);
 		if (cars.size() > 5) {
-			throw new BusinessException("");
+			throw new BusinessException("EXCEED.THE.NUMBER.OF.BRAND");
 		}
+	}
+
+	private void checkIfCarExistsByPlate(String plate) { // aynı isimde marka varsa hata döndür
+		Car car = this.carRepository.findByPlate(plate);
+		if (car != null) {
+			throw new BusinessException("CAR.PLATE.EXISTS");
+		}
+	}
+
+	private void checkIfCarExistsById(int id) {
+		Car brand = this.carRepository.findById(id);
+		if (brand == null) {
+			throw new BusinessException("CAR.EXISTS");
+		}
+	}
+
+	@Override
+	public Car findByCarId(int id) {// CarService Kullanan böyle bir araba var mı bilecek.
+		checkIfCarExistsById(id);
+		Car car = this.carRepository.findById(id);
+		return car;
 	}
 
 }

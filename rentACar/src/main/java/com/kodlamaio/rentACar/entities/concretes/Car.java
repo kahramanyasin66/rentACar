@@ -13,9 +13,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+@Builder //mapping 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -59,8 +60,8 @@ public class Car {
 	@OneToMany(mappedBy = "car") // kiradaki arabalar
 	private List<Rental> rentals;
 
-	@ManyToOne
-	@JoinColumn(name = "city_id")
-	private City city;
+//	@ManyToOne
+//	@JoinColumn(name = "city_id")  
+//	private City city;
 
 }

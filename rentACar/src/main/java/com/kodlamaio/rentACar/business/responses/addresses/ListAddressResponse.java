@@ -8,9 +8,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ListAddressResponse {
-	private int id ;
-	private String realAddress ;
-	private String invoiceAddress ;
-	private int userId;
+	
+	private int id;
+
+	private String realAddress;
+	private String invoiceAddress;
+	private int customerId;
 
 }

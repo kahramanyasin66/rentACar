@@ -9,6 +9,7 @@ import com.kodlamaio.rentACar.business.responses.maintenances.ListMaintenanceRes
 import com.kodlamaio.rentACar.business.responses.maintenances.MaintenanceResponse;
 import com.kodlamaio.rentACar.core.utilities.results.DataResult;
 import com.kodlamaio.rentACar.core.utilities.results.Result;
+import com.kodlamaio.rentACar.entities.concretes.Maintenance;
 
 public interface MaintenanceService  {
 	Result add(CreateMaintenanceRequest createMaintenanceRequest );
@@ -20,4 +21,7 @@ public interface MaintenanceService  {
     DataResult<List<ListMaintenanceResponse>> getAll();
 	
 	DataResult<MaintenanceResponse> getById(int id);
+	
+	Maintenance findByMaintenanceId(int id);
+	
 }

@@ -8,7 +8,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreateAddressRequest {
-	private String realAddress ;
-	private String invoiceAddress ;
-	private int userId;
+
+	private String realAddress;
+	private String invoiceAddress;
+	private int customerId;
 }

@@ -9,6 +9,7 @@ import com.kodlamaio.rentACar.business.responses.brands.BrandResponse;
 import com.kodlamaio.rentACar.business.responses.brands.ListBrandResponse;
 import com.kodlamaio.rentACar.core.utilities.results.DataResult;
 import com.kodlamaio.rentACar.core.utilities.results.Result;
+import com.kodlamaio.rentACar.entities.concretes.Brand;
 
 // Response request 
 
@@ -22,5 +23,8 @@ public interface BrandService {
 	DataResult<List<ListBrandResponse>> getAll();
 
 	DataResult<BrandResponse> getById(int id);
+	
+	Brand findByBrandId(int id);
+	
 
 }

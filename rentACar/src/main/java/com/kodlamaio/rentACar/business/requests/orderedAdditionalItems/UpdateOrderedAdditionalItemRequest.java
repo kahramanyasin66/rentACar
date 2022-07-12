@@ -13,8 +13,6 @@ public class UpdateOrderedAdditionalItemRequest {
 	private int id;
 	private int additionalItemId;
 	private int rentalId;
-	private double totalPrice;
-	private int totalDays;
 	private LocalDate pickUpDate;
 	private LocalDate returnDate;
 }

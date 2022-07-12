@@ -44,7 +44,6 @@ public class BrandManager implements BrandService {
 		 */
 
 		checkIfBrandExistsByName(createBrandRequest.getName());
-		
 		Brand brand = this.modelMapperService.forRequest().map(createBrandRequest, Brand.class);
 		this.brandRepository.save(brand);
 		return new SuccessResult("BRAND.ADDED");
@@ -53,16 +52,16 @@ public class BrandManager implements BrandService {
 
 	@Override
 	public Result delete(DeleteBrandRequest deleteBrandRequest) {
-
+		checkIfBrandExistsById(deleteBrandRequest.getId());
 		Brand deleteToBrand = this.modelMapperService.forRequest().map(deleteBrandRequest, Brand.class);
 		this.brandRepository.delete(deleteToBrand);
 		return new SuccessResult("BRAND.DELETED");
-				
 
 	}
 
 	@Override
 	public Result update(UpdateBrandRequest updateBrandRequest) {
+		checkIfBrandExistsById(updateBrandRequest.getId());
 
 		Brand brandToUpdate = modelMapperService.forRequest().map(updateBrandRequest, Brand.class);
 
@@ -85,7 +84,7 @@ public class BrandManager implements BrandService {
 				.map(brand -> this.modelMapperService.forResponse().map(brand, ListBrandResponse.class))
 				.collect(Collectors.toList());
 
-		return new SuccessDataResult<List<ListBrandResponse>>(response);
+		return new SuccessDataResult<List<ListBrandResponse>>(response, "BRAND.LISTED");
 
 	}
 
@@ -101,7 +100,21 @@ public class BrandManager implements BrandService {
 	private void checkIfBrandExistsByName(String name) { // aynı isimde marka varsa hata döndür
 		Brand currentBrand = this.brandRepository.findByName(name);
 		if (currentBrand != null) {
-			throw new BusinessException("BRAND:EXISTS");
+			throw new BusinessException("BRAND.NAME.EXISTS");
 		}
+	}
+
+	private void checkIfBrandExistsById(int id) {
+		Brand brand = this.brandRepository.findById(id);
+		if (brand != null) {
+			throw new BusinessException("BRAND.EXISTS");
+		}
+	}
+
+	@Override
+	public Brand findByBrandId(int id) { // BrandService Kullanan böyle bir marka var mı bilecek.
+		checkIfBrandExistsById(id);
+		Brand brand = this.brandRepository.findById(id);
+		return brand;
 	}
 }

@@ -9,20 +9,28 @@ import com.kodlamaio.rentACar.business.responses.addresses.AddressResponse;
 import com.kodlamaio.rentACar.business.responses.addresses.ListAddressResponse;
 import com.kodlamaio.rentACar.core.utilities.results.DataResult;
 import com.kodlamaio.rentACar.core.utilities.results.Result;
+import com.kodlamaio.rentACar.entities.concretes.Address;
 
 public interface AddressService {
-	Result add(CreateAddressRequest createAddressRequest);
-
-	Result update(UpdateAddressRequest updateAddressRequest);
-
+	Result addForIndividualCustomer(CreateAddressRequest createAddressRequest);//individual customer için adres ekleme 
+	Result addForCorporateCustomer(CreateAddressRequest createAddressRequest); //corporate customer için adres ekleme 
+	
+	Result addInvoiceAddressIfDifferentForIndividualCustomer(CreateAddressRequest createAddressRequest); //individual customer için fatura adresi ekleme 
+	Result addInvoiceAddressIfDifferentForCorporateCustomer(CreateAddressRequest createAddressRequest);  //corporate customer için fatura adresi ekleme
+	
+	
+	Result updateForIndividualCustomer(UpdateAddressRequest updateAddressRequest); //individual customer için adres düzenleme  
+	Result updateForCorporateCustomer(UpdateAddressRequest updateAddressRequest); //corporate customer için adres düzenleme
+	
+	Result updateIfBothAreSameForIndividualCustomer(UpdateAddressRequest updateAddressRequest);//individual customer için fatura adresi düzenleme
+	Result updateIfBothAreSameForCorporateCustomer(UpdateAddressRequest updateAddressRequest);//corporate customer için fatura adresi düzenleme
+	
 	Result delete(DeleteAddressRequest deleteAddressRequest);
-
+	
+	
 	DataResult<List<ListAddressResponse>> getAll();
-
 	DataResult<AddressResponse> getById(int id);
 	
-	DataResult<List<ListAddressResponse>> getAllInvoiceAddress(int userId, int addressType);
-	
-	DataResult<List<ListAddressResponse>> getAllRealAddress(int userId, int addressType);
+	Address findByAddressId(int id);
 
 }

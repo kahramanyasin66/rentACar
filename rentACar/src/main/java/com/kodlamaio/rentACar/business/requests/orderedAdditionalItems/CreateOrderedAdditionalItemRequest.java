@@ -12,8 +12,6 @@ import lombok.NoArgsConstructor;
 public class CreateOrderedAdditionalItemRequest {
 	private int additionalItemId;
 	private int rentalId;
-	private double totalPrice;
-	private int totalDays;
 	private LocalDate pickUpDate;
 	private LocalDate returnDate;
 

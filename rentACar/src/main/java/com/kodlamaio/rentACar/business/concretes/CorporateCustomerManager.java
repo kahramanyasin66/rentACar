@@ -12,6 +12,7 @@ import com.kodlamaio.rentACar.business.requests.corporateCustomers.DeleteCorpora
 import com.kodlamaio.rentACar.business.requests.corporateCustomers.UpdateCorporateCustomerRequest;
 import com.kodlamaio.rentACar.business.responses.corporateCustomers.CorporateCustomerResponse;
 import com.kodlamaio.rentACar.business.responses.corporateCustomers.ListCorporeteCustomerResponse;
+import com.kodlamaio.rentACar.core.utilities.exceptions.BusinessException;
 import com.kodlamaio.rentACar.core.utilities.mapping.ModelMapperService;
 import com.kodlamaio.rentACar.core.utilities.results.DataResult;
 import com.kodlamaio.rentACar.core.utilities.results.Result;
@@ -37,9 +38,7 @@ public class CorporateCustomerManager implements CorporateCustomerService {
 	public Result add(CreateCorporateCustomerRequest corporateCustomerRequest) {
 		CorporateCustomer corporateCustomer = this.modelMapperService.forRequest().map(corporateCustomerRequest,
 				CorporateCustomer.class);
-		
-		
-		
+
 		this.corporateCustomerRepository.save(corporateCustomer);
 
 		return new SuccessResult("CORPORATE.CUSTOMER.ADDED");
@@ -47,6 +46,7 @@ public class CorporateCustomerManager implements CorporateCustomerService {
 
 	@Override
 	public Result update(UpdateCorporateCustomerRequest updateCorporateCustomerRequest) {
+		checkIfCorporateCustomerExistsById(updateCorporateCustomerRequest.getId());
 		CorporateCustomer updateToCorporateCustomer = this.modelMapperService.forRequest()
 				.map(updateCorporateCustomerRequest, CorporateCustomer.class);
 		this.corporateCustomerRepository.save(updateToCorporateCustomer);
@@ -55,6 +55,7 @@ public class CorporateCustomerManager implements CorporateCustomerService {
 
 	@Override
 	public Result delete(DeleteCorporateCustomerRequest deleteCorporateCustomerRequest) {
+		checkIfCorporateCustomerExistsById(deleteCorporateCustomerRequest.getId());
 		CorporateCustomer deleteToCorporateCustomer = this.modelMapperService.forRequest()
 				.map(deleteCorporateCustomerRequest, CorporateCustomer.class);
 		this.corporateCustomerRepository.delete(deleteToCorporateCustomer);
@@ -65,22 +66,37 @@ public class CorporateCustomerManager implements CorporateCustomerService {
 	@Override
 	public DataResult<List<ListCorporeteCustomerResponse>> getAll() {
 		List<CorporateCustomer> corporateCustomers = this.corporateCustomerRepository.findAll();
-		
-		List<ListCorporeteCustomerResponse> response = corporateCustomers.stream()				
-				.map(corporateCustomer -> this.modelMapperService.forResponse()
-						.map(corporateCustomer,ListCorporeteCustomerResponse.class))
-						.collect(Collectors.toList());						
-						
-		return new SuccessDataResult<List<ListCorporeteCustomerResponse>>(response ,"CORPORATE.CUSTOMERS.LISTED");
+
+		List<ListCorporeteCustomerResponse> response = corporateCustomers.stream()
+				.map(corporateCustomer -> this.modelMapperService.forResponse().map(corporateCustomer,
+						ListCorporeteCustomerResponse.class))
+				.collect(Collectors.toList());
+
+		return new SuccessDataResult<List<ListCorporeteCustomerResponse>>(response, "CORPORATE.CUSTOMERS.LISTED");
 	}
 
 	@Override
 	public DataResult<CorporateCustomerResponse> getById(int id) {
+		checkIfCorporateCustomerExistsById(id);
 		CorporateCustomer corporateCustomerId = this.corporateCustomerRepository.findById(id);
 		CorporateCustomerResponse response = this.modelMapperService.forResponse().map(corporateCustomerId,
 				CorporateCustomerResponse.class);
 
-		return new SuccessDataResult<CorporateCustomerResponse>(response , "CORPORATE.CUSTOMER.GETTED");
+		return new SuccessDataResult<CorporateCustomerResponse>(response, "CORPORATE.CUSTOMER.GETTED");
+	}
+
+	private void checkIfCorporateCustomerExistsById(int id) {
+		CorporateCustomer corporateCustomer = this.corporateCustomerRepository.findById(id);
+		if (corporateCustomer == null) {
+			throw new BusinessException("CORPORATE.CUSTOMER.EXISTS");
+		}
+	}
+
+	@Override
+	public CorporateCustomer findByCorporateCustomerId(int id) {
+		checkIfCorporateCustomerExistsById(id);
+		CorporateCustomer corporateCustomer = this.corporateCustomerRepository.findById(id);
+		return corporateCustomer;
 	}
 
 }

@@ -25,14 +25,15 @@ public class Address {
 	@Column(name = "id")
 	private int id;
 	
+	@ManyToOne
+	@JoinColumn(name = "customer_id")
+	private Customer customer;   
+	
 	@Column(name = "real_address") // delivery_address
 	private String realAddress;
 	
 	@Column(name = "invoice_address") // bill_address
 	private String invoiceAddress;
-
-	@ManyToOne
-	@JoinColumn(name = "customer_id")
-	private Customer customer;
+	
 
 }

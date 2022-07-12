@@ -7,9 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateInvoiceRequest {
+public class UpdateInvoiceRequest {
+	private int id;
 	private int invoiceNumber;
-	private int state;
 	private int rentalId;
-	
+	private int  state;
 }

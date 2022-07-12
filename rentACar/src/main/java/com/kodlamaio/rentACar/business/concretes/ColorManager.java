@@ -43,6 +43,7 @@ public class ColorManager implements ColorService {
 
 	@Override
 	public Result delete(DeleteColorRequest deleteColorRequest) {
+		checkIfColorExistsById(deleteColorRequest.getId());
 		Color deleteToColor = this.modelMapperService.forRequest().map(deleteColorRequest, Color.class);
 		this.colorRepository.delete(deleteToColor);
 		return new SuccessResult("COLOR.DELETED");
@@ -55,6 +56,7 @@ public class ColorManager implements ColorService {
 		 * updateColorRequest.setName(colorToUpdate.getName());
 		 */
 
+		checkIfColorExistsById(updateColorRequest.getId());
 		Color color = this.modelMapperService.forRequest().map(updateColorRequest, Color.class);
 		this.colorRepository.save(color);
 		return new SuccessResult("COLOR.UPDATED");
@@ -69,23 +71,38 @@ public class ColorManager implements ColorService {
 				.collect(Collectors.toList());
 
 		return new SuccessDataResult<List<ListColorResponse>>(response, "COLORS.LISTED");
-		
+
 		// new SuccessDataResult<List<ColorResponse>>(this.colorRepository.findAll());
 	}
 
 	@Override
 	public DataResult<ColorResponse> getById(int id) {
+		checkIfColorExistsById(id);
 		Color color = this.colorRepository.findById(id);
 		ColorResponse response = this.modelMapperService.forResponse().map(color, ColorResponse.class);
 
-		return new SuccessDataResult<ColorResponse>(response, "COLOR.GETTED");		
+		return new SuccessDataResult<ColorResponse>(response, "COLOR.GETTED");
 		// SuccessDataResult<ColorResponse>(this.colorRepository.findById(colorResponse.getId()));
 	}
 
 	private void checkIfColorExistsByName(String name) {
 		Color currentColor = this.colorRepository.findByName(name);
 		if (currentColor != null) {
+			throw new BusinessException("COLOR.NAME.EXISTS");
+		}
+	}
+
+	private void checkIfColorExistsById(int id) {
+		Color color = this.colorRepository.findById(id);
+		if (color == null) {
 			throw new BusinessException("COLOR.EXISTS");
 		}
+	}
+
+	@Override
+	public Color findByColorId(int id) {
+		checkIfColorExistsById(id);
+		Color color = this.colorRepository.findById(id);
+		return color;
 	}
 }

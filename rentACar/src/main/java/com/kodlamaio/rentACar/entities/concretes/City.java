@@ -27,9 +27,9 @@ public class City {
 	@Column(name = "name")
 	private String name;
 
-	@OneToMany(mappedBy = "city")
-	List<Car> cars;
-	
+//	@OneToMany(mappedBy = "city")  //arabanın şehri olmasına gerek yok dediler
+//	List<Car> cars;
+//	
 	
 	@OneToMany(mappedBy = "pickUpCityId")
 	List<Rental> pickUpCityRentals ;

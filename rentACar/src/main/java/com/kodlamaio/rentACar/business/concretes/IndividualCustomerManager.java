@@ -27,54 +27,55 @@ import com.kodlamaio.rentACar.entities.concretes.IndividualCustomer;
 public class IndividualCustomerManager implements IndividualCustomerService {
 	private IndividualCustomerRepository individualCustomerRepository;
 	private ModelMapperService modelMapperService;
-	PersonCheckService personCheckService;
-
+	private PersonCheckService personCheckService;
 
 	@Autowired
 	public IndividualCustomerManager(IndividualCustomerRepository individualCustomerRepository,
-			ModelMapperService modelMapperService,PersonCheckService personCheckService) {
+			ModelMapperService modelMapperService, PersonCheckService personCheckService) {
 		this.individualCustomerRepository = individualCustomerRepository;
 		this.modelMapperService = modelMapperService;
 		this.personCheckService = personCheckService;
 	}
- /*-------------------------------------------------------------------*/
+
+	/*-------------------------------------------------------------------*/
 	@Override
 	public Result add(CreateIndividualCustomerRequest createIndividualCustomerRequest)
 			throws NumberFormatException, RemoteException {
-		
+
 		IndividualCustomer individualCustomer = this.modelMapperService.forRequest()
 				.map(createIndividualCustomerRequest, IndividualCustomer.class);
-		checkUserExistsByNationality(individualCustomer);		
-		this.individualCustomerRepository.save(individualCustomer);		
+		checkUserExistsByNationalityId(individualCustomer);
+		this.individualCustomerRepository.save(individualCustomer);
 
 		return new SuccessResult("INDIVIDUAL.CUSTOMER.ADDED");
 	}
-	
-	private void checkUserExistsByNationality(IndividualCustomer individualCustomer)
+
+	private void checkUserExistsByNationalityId(IndividualCustomer individualCustomer)
 			throws NumberFormatException, RemoteException {
-         //TC Kimlik Numarasının Doğruluğunu Kontrol Ediyoruz
+		// TC Kimlik Numarasının Doğruluğunu Kontrol Ediyoruz
 		if (!personCheckService.checkPerson(individualCustomer)) {
 
 			throw new BusinessException("USER.WASN'T.ADDED");
 		}
 	}
-	
-	
-	
+
 	/*-------------------------------------------------------------------------*/
 
 	@Override
 	public Result update(UpdateIndividualCustomerRequest updateIndividualCustomerRequest) {
-		IndividualCustomer updateToIndividualCustomer = this.modelMapperService.forRequest()				
-				.map(updateIndividualCustomerRequest, IndividualCustomer.class);		
-		
-		this.individualCustomerRepository.save(updateToIndividualCustomer);		
+
+		checkIfIndividualCustomerExistsById(updateIndividualCustomerRequest.getId());
+		IndividualCustomer updateToIndividualCustomer = this.modelMapperService.forRequest()
+				.map(updateIndividualCustomerRequest, IndividualCustomer.class);
+
+		this.individualCustomerRepository.save(updateToIndividualCustomer);
 
 		return new SuccessResult("INDIVIDUAL.CUSTOMER.UPDATED");
 	}
 
 	@Override
 	public Result delete(DeleteIndividualCustomerRequest deleteIndividualCustomerRequest) {
+		checkIfIndividualCustomerExistsById(deleteIndividualCustomerRequest.getId());
 		IndividualCustomer deleteToIndividualCustomer = this.modelMapperService.forRequest()
 				.map(deleteIndividualCustomerRequest, IndividualCustomer.class);
 		this.individualCustomerRepository.delete(deleteToIndividualCustomer);
@@ -85,26 +86,38 @@ public class IndividualCustomerManager implements IndividualCustomerService {
 	@Override
 	public DataResult<List<ListIndividualCustomerResponse>> getAll() {
 		List<IndividualCustomer> individualCustomers = this.individualCustomerRepository.findAll();
-		
-		List<ListIndividualCustomerResponse> response = individualCustomers.stream()				
-				.map(individualCustomer -> this.modelMapperService.forRequest()						
-						.map(individualCustomer, ListIndividualCustomerResponse.class))				
-						.collect(Collectors.toList());
-		
 
-		return new SuccessDataResult<List<ListIndividualCustomerResponse>>(response,"INDIVIDUAL.CUSTOMERS.LISTED");
+		List<ListIndividualCustomerResponse> response = individualCustomers.stream()
+				.map(individualCustomer -> this.modelMapperService.forRequest().map(individualCustomer,
+						ListIndividualCustomerResponse.class))
+				.collect(Collectors.toList());
+
+		return new SuccessDataResult<List<ListIndividualCustomerResponse>>(response, "INDIVIDUAL.CUSTOMERS.LISTED");
 	}
 
 	@Override
 	public DataResult<IndividualCustomerResponse> getById(int id) {
-		
-		IndividualCustomer individualCustomer = this.individualCustomerRepository.findById(id);
-		IndividualCustomerResponse response = this.modelMapperService.forResponse()
-				.map(individualCustomer, IndividualCustomerResponse.class);				
+		checkIfIndividualCustomerExistsById(id);
 
-		return new SuccessDataResult<IndividualCustomerResponse>(response,"INDIVIDUAL.CUSTOMER.GETTED");
+		IndividualCustomer individualCustomer = this.individualCustomerRepository.findById(id);
+		IndividualCustomerResponse response = this.modelMapperService.forResponse().map(individualCustomer,
+				IndividualCustomerResponse.class);
+
+		return new SuccessDataResult<IndividualCustomerResponse>(response, "INDIVIDUAL.CUSTOMER.GETTED");
 	}
-	
-	
+
+	private void checkIfIndividualCustomerExistsById(int id) {
+		IndividualCustomer individualCustomer = this.individualCustomerRepository.findById(id);
+		if (individualCustomer == null) {
+			throw new BusinessException("INDIVIDUAL.CUSTOMER.EXISTS");
+		}
+	}
+
+	@Override
+	public IndividualCustomer findByIndividualCustomerId(int id) {
+		checkIfIndividualCustomerExistsById(id);
+		IndividualCustomer individualCustomer = this.individualCustomerRepository.findById(id);
+		return individualCustomer;
+	}
 
 }

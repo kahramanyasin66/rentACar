@@ -6,4 +6,5 @@ import com.kodlamaio.rentACar.entities.concretes.IndividualCustomer;
 
 public interface IndividualCustomerRepository extends JpaRepository<IndividualCustomer, Integer> {
   IndividualCustomer findById(int id);
+  IndividualCustomer findByIdentityNumber(String identityNumber);
 }
