@@ -13,7 +13,7 @@ import com.kodlamaio.rentACar.entities.concretes.Car;
 
 public interface CarService {
 	Result add(CreateCarRequest createCarRequest);
-//sdsaf
+
 	Result delete(DeleteCarRequest deleteCarRequest);
 
 	Result update(UpdateCarRequest updateCarRequest);
@@ -23,5 +23,14 @@ public interface CarService {
 	DataResult<CarResponse> getById(int id);
 
     Car findByCarId(int id);
+    
+    
+    
+    DataResult<List<ListCarResponse>> getAllSortedByFindeksNumber();
+	DataResult<List<ListCarResponse>> getAllSortedByFindeksNumberAndKilometer();
+	DataResult<List<ListCarResponse>> getByState(int state);
+	DataResult<List<ListCarResponse>> getByCityName(String cityName);
+	DataResult<List<ListCarResponse>> getByBrandAndColor(String brandName,String colorName);
+	DataResult<List<ListCarResponse>> getDailyPriceGreaterThan(double dailyPrice);
 
 }

@@ -15,7 +15,7 @@ public class CarResponse {
 	private String plate;
 	private int carState;
 	private int brandId;
-	private int colorId;
+	private int colorId;	
+	private int cityId;
 	private int carScore;
-
 }

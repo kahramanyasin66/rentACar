@@ -27,16 +27,13 @@ public class City {
 	@Column(name = "name")
 	private String name;
 
-//	@OneToMany(mappedBy = "city")  //arabanın şehri olmasına gerek yok dediler
-//	List<Car> cars;
-//	
-	
+	@OneToMany(mappedBy = "city") // arabanın şehri olmasına gerek yok dediler
+	List<Car> cars;
+
 	@OneToMany(mappedBy = "pickUpCityId")
-	List<Rental> pickUpCityRentals ;
-	
+	List<Rental> pickUpCityRentals;
+
 	@OneToMany(mappedBy = "returnedCityId")
-	List<Rental> returnedCityRentals ;
-	
-	
+	List<Rental> returnedCityRentals;
 
 }

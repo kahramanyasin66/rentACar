@@ -55,5 +55,39 @@ public class CarsController {
 		return this.carService.getById(id);
 		// this.carService.getById(id);
 	}
+	/*-------------------------OTHERS----------------------------*/
+	@GetMapping("/getbystate") 
+	public DataResult<List<ListCarResponse>> getByState(@RequestParam int state) {
+		return this.carService.getByState(state);
+	}
+	
+	@GetMapping("/getbycityname")
+	public DataResult<List<ListCarResponse>> getByCityName(@RequestParam String cityname) {
+		return this.carService.getByCityName(cityname);
+	}
+	
+	@GetMapping("/getbybrandandcolorname")
+	public DataResult<List<ListCarResponse>> getByBrandAndColor(String brandName,String colorName) {
+		return this.carService.getByBrandAndColor(brandName,colorName);
+	}
+	
+	@GetMapping("/getallsortedbyfindeksnumber")
+	public DataResult<List<ListCarResponse>> getAllSortedByFindeksNumber() {
+		return this.carService.getAllSortedByFindeksNumber();
+	}
+	
+	@GetMapping("/getallsortedbyfindeksnumberandkilometer")
+	public DataResult<List<ListCarResponse>> getAllSortedByFindeksNumberAndKilometer() {
+		return this.carService.getAllSortedByFindeksNumberAndKilometer();
+	}
+	
+	@GetMapping("/getdailypricegreaterthan")
+	public DataResult<List<ListCarResponse>> getDailyPriceGreaterThan(double dailyPrice) {
+		return this.carService.getDailyPriceGreaterThan(dailyPrice);
+	}
+	
+	
+	
+	
 
 }

@@ -16,7 +16,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-@Builder //mapping 
+
+@Builder // mapping
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -43,7 +44,7 @@ public class Car {
 	@Column(name = "car_state")
 	private int carState;
 
-	@Column(name = "car_score") // findexScore ile eşleştirme yapmak için 
+	@Column(name = "car_score") // findexScore ile eşleştirme yapmak için
 	private int carScore;
 
 	@ManyToOne
@@ -60,8 +61,8 @@ public class Car {
 	@OneToMany(mappedBy = "car") // kiradaki arabalar
 	private List<Rental> rentals;
 
-//	@ManyToOne
-//	@JoinColumn(name = "city_id")  
-//	private City city;
+	@ManyToOne
+	@JoinColumn(name = "city_id")
+	private City city;
 
 }

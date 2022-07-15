@@ -1,5 +1,6 @@
 package com.kodlamaio.rentACar.business.concretes;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -133,6 +134,69 @@ public class CarManager implements CarService {
 		checkIfCarExistsById(id);
 		Car car = this.carRepository.findById(id);
 		return car;
+	}
+
+	/*--------------------------------- CAR SINIFINA ÖZEL İŞ KURALLARI ------------------------------------------*/
+	@Override // Findeks puanına göre arabaları listeleme
+
+	public DataResult<List<ListCarResponse>> getAllSortedByFindeksNumber() {
+		List<Car> cars = this.carRepository.findAll();
+		List<ListCarResponse> response = cars.stream()
+				.map(car -> this.modelMapperService.forResponse().map(car, ListCarResponse.class))
+				.sorted(Comparator.comparing(ListCarResponse::getCarScore).reversed()).collect(Collectors.toList());
+		return new SuccessDataResult<List<ListCarResponse>>(response, "CARS.LISTED");
+	}
+
+	@Override // Findeks puanına ve kilometresine göre sıralayıp getirir.
+	public DataResult<List<ListCarResponse>> getAllSortedByFindeksNumberAndKilometer() {
+		List<Car> cars = this.carRepository.findAll();
+		List<ListCarResponse> response = cars.stream()
+				.map(car -> this.modelMapperService.forResponse().map(car, ListCarResponse.class))
+				.sorted(Comparator.comparing(ListCarResponse::getCarScore).thenComparing(ListCarResponse::getKilometer)
+						.reversed())
+				.collect(Collectors.toList());
+
+		return new SuccessDataResult<List<ListCarResponse>>(response, "CARS.LISTED");
+	}
+
+	@Override // Araç durumlarına göre listeleme
+	public DataResult<List<ListCarResponse>> getByState(int state) {
+		List<Car> cars = this.carRepository.findAll();
+		List<ListCarResponse> response = cars.stream()
+				.map(car -> this.modelMapperService.forResponse().map(car, ListCarResponse.class))
+				.filter(car -> car.getCarState() == state).collect(Collectors.toList());
+
+		return new SuccessDataResult<List<ListCarResponse>>(response, "CARS.LISTED");
+	}
+
+	@Override // Şehirlere göre araçları listeleme
+	public DataResult<List<ListCarResponse>> getByCityName(String cityName) {
+		List<Car> cars = this.carRepository.findAll();
+		List<ListCarResponse> response =cars.stream()
+				.map(car -> this.modelMapperService.forResponse().map(car,ListCarResponse.class))
+				.filter(car -> cityName.equals(car.getCityName()))
+						.collect(Collectors.toList());				 
+
+		return new SuccessDataResult<List<ListCarResponse>>(response ,"CARS.LISTED");
+	}
+
+	@Override // Marka ve Renge Göre Araçları Listeleme
+	public DataResult<List<ListCarResponse>> getByBrandAndColor(String brandName, String colorName) {
+		List<Car> cars = this.carRepository.findAll();
+		List<ListCarResponse> response = cars.stream().map(car-> this.modelMapperService.forResponse().map(car, ListCarResponse.class))
+				.filter(car -> brandName.equals(car.getBrandName()) && colorName.equals(car.getColorName()))
+						.collect(Collectors.toList());
+		return new SuccessDataResult<List<ListCarResponse>>(response,"CARS.LISTED"); 
+	}
+
+	@Override // Günlük fiyat sınırlandırması ile listeleme
+	public DataResult<List<ListCarResponse>> getDailyPriceGreaterThan(double dailyPrice) {
+	  List<Car> cars =  this.carRepository.findAll();
+	  List<ListCarResponse> response  = cars.stream()
+			  .map(car -> this.modelMapperService.forResponse().map(car, ListCarResponse.class))
+			  .filter(car -> car.getDailyPrice() > dailyPrice )
+			  .collect(Collectors.toList());
+		return new SuccessDataResult<List<ListCarResponse>>(response,"CARS.LISTED");
 	}
 
 }
