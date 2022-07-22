@@ -2,8 +2,8 @@
  <p align="center"> RentACar Project Backend is a demo project with Spring Boot. </p>
  
 ## Build With
- <a href="https://github.com/kadirdemirel" rel="nofollow"><img align="" alt="JAVA" width="26px" src="https://raw.githubusercontent.com/kadirdemirel/kadirdemirel/main/images/java.png" style="max-width:100%;"></a>
- <a href="https://github.com/kadirdemirel" rel="nofollow"><img align="" alt="SPRINGBOOT" width="26px" src="https://miro.medium.com/fit/c/294/294/1*R6jBaoIrvb49knSiTJ7lgA.png" style="max-width:100%;"></a>
+ <a href="https://github.com/kahramanyasin66" rel="nofollow"><img align="" alt="JAVA" width="26px" src="https://raw.githubusercontent.com/kahramanyasin66/kahramanyasin66/main/images/java.png" style="max-width:100%;"></a>
+ <a href="https://github.com/kahramanyasin66" rel="nofollow"><img align="" alt="SPRINGBOOT" width="26px" src="https://miro.medium.com/fit/c/294/294/1*R6jBaoIrvb49knSiTJ7lgA.png" style="max-width:100%;"></a>
 
 ## Technologies, Tools And Techniques Used
 - Java
