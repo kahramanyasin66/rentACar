@@ -27,9 +27,6 @@ Contributions are what make the open source community such an amazing place to b
 5. Open a Pull Request
 
 
-## Partnership
-<a href="https://github.com/kayambetul">Betül Kayam</a>
-
 ## Contact
 [![](https://img.shields.io/badge/linkedin-%230077B5.svg?&style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/yasin-kahraman-6376a3192/)
 [![](https://img.shields.io/badge/medium-%2312100E.svg?&style=for-the-badge&logo=medium&logoColor=white)](https://medium.com/@yasinkahraman66)
